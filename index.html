@@ -1,0 +1,2914 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DOCUFÁCIL MÉXICO — Tus documentos, fáciles y rápidos</title>
+<meta name="description" content="Crea tu currículum profesional en minutos, paga en efectivo en OXXO y descarga tu PDF al instante. Tus documentos, fáciles y rápidos.">
+<meta property="og:title" content="DOCUFÁCIL MÉXICO — Tus documentos, fáciles y rápidos">
+<meta property="og:description" content="Currículum profesional por $99 MXN. Crea, paga en OXXO y descarga tu PDF en minutos.">
+<meta property="og:type" content="website">
+<!-- jsPDF 2.5.1 (CDN) para generar los PDF de verdad en el navegador -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+/* ============ DOCUFÁCIL MÉXICO — estilos ============ */
+:root{
+  --navy:#0B2447; --navy2:#12335C; --electric:#2563EB; --electric-dark:#1D4ED8;
+  --yellow:#FFC107; --yellow-dark:#E0A800; --white:#FFFFFF; --bg:#F4F7FB; --ink:#14213A;
+  --muted:#5B6B82; --line:#D9E0EA; --green:#128C4A; --red:#B42318; --radius:14px;
+  --shadow:0 8px 28px rgba(11,36,71,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+h1,h2,h3,h4{line-height:1.25;margin:0 0 8px}
+p{margin:0 0 10px}
+a{color:var(--electric)}
+img{max-width:100%}
+.container{max-width:760px;margin:0 auto;padding:0 16px}
+section{padding:28px 0}
+.sec-title{font-size:22px;color:var(--navy)}
+.sec-sub{color:var(--muted);font-size:14.5px;margin-bottom:16px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.hidden{display:none !important}
+.muted{color:var(--muted);font-size:13.5px}
+.ok{color:var(--green);font-weight:700}
+.err{color:var(--red);font-weight:700}
+.warn{color:#9A6A00;font-weight:700}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;letter-spacing:.4px}
+.badge-green{background:#E5F4EC;color:var(--green)}
+.badge-yellow{background:#FDF0D2;color:#9A6A00}
+.badge-gray{background:#EDF1F6;color:var(--muted)}
+.badge-red{background:#FDECEA;color:var(--red)}
+/* ---- encabezado ---- */
+header.site{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.header-in{max-width:760px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:#fff}
+.logo svg{flex:0 0 auto}
+.logo b{font-size:17px;letter-spacing:.3px;line-height:1.1}
+.logo small{display:block;font-size:10.5px;color:#BFD0E8;font-weight:500;letter-spacing:.4px}
+nav.main{margin-left:auto;display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end}
+nav.main a{color:#D7E3F2;text-decoration:none;font-size:13px;font-weight:600;padding:7px 9px;border-radius:8px}
+nav.main a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.main a.active{background:var(--yellow);color:var(--navy)}
+/* ---- botones ---- */
+.btn{display:inline-block;border:0;border-radius:12px;padding:13px 18px;font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;text-align:center;line-height:1.2}
+.btn-yellow{background:var(--yellow);color:var(--navy)}
+.btn-yellow:hover{background:var(--yellow-dark)}
+.btn-blue{background:var(--electric);color:#fff}
+.btn-blue:hover{background:var(--electric-dark)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-outline{background:#fff;border:2px solid var(--electric);color:var(--electric)}
+.btn-block{width:100%}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn-sm{padding:9px 12px;font-size:13.5px;border-radius:10px}
+/* ---- hero ---- */
+.hero{background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 55%,#1B4A8A 100%);color:#fff;padding:44px 0 36px}
+.hero h1{font-size:30px;margin-bottom:10px}
+.hero h1 .yl{color:var(--yellow)}
+.hero p{color:#C9D8EC;font-size:16px;max-width:520px}
+.hero .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.hero .trust{margin-top:16px;font-size:13px;color:#9FB4D2}
+.hero .trust b{color:#fff}
+/* ---- formularios ---- */
+label.f{display:block;font-weight:700;font-size:13.5px;margin:14px 0 5px;color:var(--navy)}
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=date],input[type=password],select,textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;font-size:15px;font-family:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--electric);border-color:var(--electric)}
+textarea{resize:vertical;min-height:80px}
+input[type=file]{width:100%;font-size:14px}
+.field-err{color:var(--red);font-size:13px;font-weight:600;margin-top:4px;min-height:0}
+.rep-item{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;background:#FBFCFE}
+.rep-item .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-del{background:none;border:0;color:var(--red);font-weight:700;font-size:13px;cursor:pointer;padding:6px 0}
+/* ---- plantillas ---- */
+.tpl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.tpl-btn{border:2px solid var(--line);background:#fff;border-radius:12px;padding:10px 4px;cursor:pointer;text-align:center}
+.tpl-btn b{display:block;font-size:12.5px;color:var(--navy)}
+.tpl-btn span{font-size:11px;color:var(--muted)}
+.tpl-btn.on{border-color:var(--electric);box-shadow:0 0 0 3px rgba(37,99,235,.18)}
+.tpl-swatch{height:34px;border-radius:8px;margin-bottom:6px}
+.sw-ejecutivo{background:linear-gradient(180deg,#0B2447 55%,#fff 55%)}
+.sw-moderno{background:linear-gradient(90deg,#2563EB 32%,#fff 32%)}
+.sw-minimalista{background:linear-gradient(180deg,#fff 60%,#1E1E1E 60%)}
+.sw-profesional{background:linear-gradient(180deg,#fff 50%,#0B2447 50%)}
+.sw-creativo{background:linear-gradient(180deg,#FFC107 40%,#2563EB 40%)}
+/* ---- vista previa del CV ---- */
+.preview-wrap{position:relative;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.cv-preview{padding:20px 18px;font-size:13.5px;min-height:320px;position:relative;background:#fff}
+.cv-preview h2{font-size:21px;margin:0}
+.cv-preview .cv-contact{font-size:12px;color:var(--muted);margin:4px 0 12px}
+.cv-preview h3{font-size:13px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid var(--electric);padding-bottom:3px;margin:16px 0 6px;color:var(--navy)}
+.cv-preview p{margin:0 0 6px}
+.cv-preview ul{margin:4px 0 8px;padding-left:18px}
+.cv-preview .cv-item{margin-bottom:8px}
+.cv-preview .cv-item b{color:var(--navy)}
+.cv-preview .cv-foto{float:right;width:76px;height:96px;object-fit:cover;border-radius:8px;border:2px solid var(--line);margin:0 0 8px 10px}
+.watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:5;overflow:hidden}
+.watermark span{display:block;transform:rotate(-28deg);font-size:26px;font-weight:900;letter-spacing:3px;color:rgba(180,35,24,.28);border:3px solid rgba(180,35,24,.28);padding:6px 18px;border-radius:10px;white-space:nowrap}
+.tpl-ejecutivo h3{border-bottom-color:#0B2447}
+.tpl-ejecutivo .cv-head{background:#0B2447;color:#fff;margin:-20px -18px 12px;padding:18px}
+.tpl-ejecutivo .cv-head h2{color:#fff}
+.tpl-ejecutivo .cv-head .cv-contact{color:#C9D8EC}
+.tpl-moderno .cv-side{border-left:5px solid #2563EB;padding-left:12px}
+.tpl-minimalista h3{border-bottom:1px solid #999;color:#333}
+.tpl-minimalista h2{color:#222;font-weight:600}
+.tpl-profesional h3{border-left:5px solid #2563EB;padding-left:8px;border-bottom:0}
+.tpl-creativo h3{border-bottom-color:#FFC107;color:#0B2447}
+.tpl-creativo .cv-head{border-bottom:5px solid #FFC107;padding-bottom:10px;margin-bottom:10px}
+/* ---- catálogo ---- */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.prod{border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:#fff;box-shadow:var(--shadow)}
+.prod h4{font-size:15.5px;color:var(--navy);margin:0 0 4px}
+.prod p{font-size:13px;color:var(--muted);margin:0 0 10px}
+.prod .price{font-size:18px;font-weight:800;color:var(--navy)}
+.prod .price small{font-size:12px;color:var(--muted);font-weight:600}
+/* ---- pasos / ventajas ---- */
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.step{border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:#fff}
+.step .n{width:30px;height:30px;border-radius:50%;background:var(--yellow);color:var(--navy);font-weight:900;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.check-list{list-style:none;padding:0;margin:0}
+.check-list li{padding:6px 0 6px 28px;position:relative}
+.check-list li:before{content:"✓";position:absolute;left:0;top:6px;width:20px;height:20px;border-radius:50%;background:#E5F4EC;color:var(--green);font-weight:900;display:flex;align-items:center;justify-content:center;font-size:12px}
+/* ---- FAQ ---- */
+.faq-item{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff;overflow:hidden}
+.faq-q{width:100%;text-align:left;background:#fff;border:0;padding:14px;font-size:15px;font-weight:700;color:var(--navy);cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+.faq-a{padding:0 14px 14px;font-size:14px;color:var(--muted);display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-q span{transform:rotate(45deg)}
+.faq-q span{font-size:20px;line-height:1;color:var(--electric)}
+/* ---- trámites ---- */
+.tramite{border-left:5px solid var(--electric);background:#fff;border-radius:0 12px 12px 0;padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.tramite h4{color:var(--navy);margin-bottom:4px}
+.tramite p{font-size:13.5px;color:var(--muted)}
+/* ---- tablas admin ---- */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--navy);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.table-wrap{overflow-x:auto}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.stat{background:var(--navy);color:#fff;border-radius:12px;padding:12px;text-align:center}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:12px;color:#BFD0E8}
+/* ---- pie ---- */
+footer.site{background:var(--navy);color:#C9D8EC;padding:28px 0 34px;margin-top:20px}
+footer.site a{color:#fff}
+footer.site h4{color:#fff}
+.legal{font-size:13px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+.legal h4{color:var(--navy)}
+.legal p{font-size:13px}
+.mx-bar{height:8px;display:flex}
+.mx-bar span{flex:1}
+.mx-bar .g{background:#128C4A}.mx-bar .w{background:#fff}.mx-bar .r{background:#B42318}
+@media (max-width:560px){
+  .hero h1{font-size:25px}
+  .tpl-grid{grid-template-columns:repeat(3,1fr)}
+  .cat-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  nav.main a{padding:6px 7px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ ENCABEZADO ============ -->
+<header class="site">
+  <div class="header-in">
+    <a class="logo" href="#inicio" aria-label="DocuFácil México - Inicio">
+      <!-- Logotipo original: documento con check -->
+      <svg width="38" height="38" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <rect x="6" y="4" width="30" height="40" rx="4" fill="#fff"/>
+        <rect x="6" y="4" width="30" height="40" rx="4" stroke="#FFC107" stroke-width="2"/>
+        <line x1="13" y1="15" x2="29" y2="15" stroke="#0B2447" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="13" y1="21" x2="29" y2="21" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="13" y1="27" x2="23" y2="27" stroke="#0B2447" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="35" cy="35" r="10" fill="#128C4A" stroke="#fff" stroke-width="2.5"/>
+        <path d="M30.5 35.2l3.2 3.2 5.8-6" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span><b>DOCUFÁCIL</b> MÉXICO<small>Tus documentos, fáciles y rápidos</small></span>
+    </a>
+    <nav class="main" aria-label="Menú principal">
+      <a href="#inicio" class="active">Inicio</a>
+      <a href="#documentos">Documentos</a>
+      <a href="#generador">Crear CV</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#tramites">Trámites</a>
+      <a href="#preguntas">Preguntas</a>
+      <a href="#mi-pedido">Mi pedido</a>
+    </nav>
+  </div>
+  <div class="mx-bar" aria-hidden="true"><span class="g"></span><span class="w"></span><span class="r"></span></div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio">
+  <div class="container">
+    <h1>Tus documentos, <span class="yl">fáciles y rápidos</span></h1>
+    <p>Crea tu currículum profesional en minutos, paga en efectivo en OXXO y descarga tu PDF al instante. Sin filas, sin vueltas, sin complicaciones.</p>
+    <div class="cta-row">
+      <a class="btn btn-yellow" href="#generador">Crear mi documento</a>
+      <a class="btn btn-outline" href="#documentos" style="border-color:#fff;color:#fff">Ver todos los documentos</a>
+    </div>
+    <p class="trust"><b>+5 diseños profesionales</b> · Pago en efectivo en OXXO · <b>PDF al instante</b> tras verificar tu depósito</p>
+  </div>
+</section>
+
+<!-- ============ PRODUCTO DESTACADO ============ -->
+<section id="destacado">
+  <div class="container">
+    <div class="card" style="border-top:6px solid var(--yellow)">
+      <span class="badge badge-yellow">PRODUCTO DESTACADO</span>
+      <h2 class="sec-title" style="margin-top:10px">Currículum profesional</h2>
+      <p class="sec-sub">Elige entre 5 diseños profesionales, completa tus datos desde tu celular, revisa la vista previa y descarga tu PDF en minutos.</p>
+      <p style="font-size:26px;font-weight:800;color:var(--navy);margin:6px 0 2px"><span id="featuredPrice">$99.00 MXN</span></p>
+      <p class="muted">Pago único. Sin suscripciones. Tu PDF queda disponible para descargarlo de nuevo desde "Mi pedido".</p>
+      <a class="btn btn-yellow btn-block" href="#generador">Crear mi currículum ahora</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATÁLOGO ============ -->
+<section id="documentos">
+  <div class="container">
+    <h2 class="sec-title">Todos nuestros documentos</h2>
+    <p class="sec-sub">Todos son digitales y de pago único. Elige uno, llena el formulario, revisa la vista previa y descarga tu PDF al verificar tu pago en OXXO.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px">
+      <input type="search" id="catalogSearch" placeholder="Buscar un documento… (ej. carta, contrato, recibo)" style="flex:1;min-width:200px" autocomplete="off">
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px" id="catFilters">
+      <button type="button" class="btn btn-navy btn-sm cat-filter on" data-filter="todos">Todos</button>
+      <button type="button" class="btn btn-outline btn-sm cat-filter" data-filter="profesionales">Profesionales</button>
+      <button type="button" class="btn btn-outline btn-sm cat-filter" data-filter="personales">Personales</button>
+      <button type="button" class="btn btn-outline btn-sm cat-filter" data-filter="formatos">Formatos</button>
+    </div>
+
+    <h3 id="catHeadProfesionales" style="color:var(--navy);margin:18px 0 10px">A. Documentos profesionales</h3>
+    <div class="cat-grid" id="catProfesionales"></div>
+
+    <h3 id="catHeadPersonales" style="color:var(--navy);margin:22px 0 10px">B. Documentos personales</h3>
+    <div class="cat-grid" id="catPersonales"></div>
+
+    <h3 id="catHeadFormatos" style="color:var(--navy);margin:22px 0 10px">C. Formatos y plantillas</h3>
+    <div class="cat-grid" id="catFormatos"></div>
+
+    <p class="muted" style="margin-top:16px">¿No encuentras el documento que necesitas? Escríbenos a <a href="mailto:contacto@docufacilmexico.com">contacto@docufacilmexico.com</a> y te avisamos cuando esté disponible.</p>
+  </div>
+</section>
+
+<!-- ============ TRÁMITES OFICIALES (ORIENTACIÓN) ============ -->
+<section id="tramites" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="container">
+    <h2 class="sec-title">Orientación sobre trámites oficiales</h2>
+    <p class="sec-sub">Te orientamos sobre dónde se obtiene cada documento oficial. <b>DocuFácil México NO vende documentos oficiales</b> ni se hace pasar por ninguna dependencia. Nunca te pediremos contraseñas del SAT, e.firma ni claves bancarias.</p>
+
+    <div class="tramite">
+      <h4>RFC y Constancia de Situación Fiscal</h4>
+      <p>La Constancia de Situación Fiscal se obtiene gratis en el portal del SAT. Necesitas tu RFC y tu contraseña del SAT o tu e.firma. Si no tienes RFC, puedes tramitarlo en línea o en una oficina del SAT con tu CURP e identificación oficial.</p>
+      <p><a href="https://www.sat.gob.mx/" target="_blank" rel="noopener">Portal oficial del SAT — sat.gob.mx</a></p>
+    </div>
+    <div class="tramite">
+      <h4>CURP</h4>
+      <p>La CURP se consulta e imprime gratis en el portal oficial del Gobierno de México. Solo necesitas tus datos personales o tu clave CURP. No pagues a nadie por este trámite: es gratuito.</p>
+      <p><a href="https://www.gob.mx/curp/" target="_blank" rel="noopener">Portal oficial de la CURP — gob.mx/curp</a></p>
+    </div>
+    <div class="tramite">
+      <h4>Acta de nacimiento</h4>
+      <p>El acta de nacimiento certificada se puede consultar y descargar en el portal oficial del Gobierno de México, con tu CURP y un pago en línea a la tarifa oficial de tu estado. También puedes obtenerla en el Registro Civil.</p>
+      <p><a href="https://www.gob.mx/actas" target="_blank" rel="noopener">Portal oficial de actas — gob.mx/actas</a></p>
+    </div>
+    <div class="tramite">
+      <h4>Número de Seguro Social (NSS)</h4>
+      <p>El NSS se asigna o se consulta gratis en el IMSS, con tu CURP y un correo electrónico. El trámite es en línea o en una subdelegación del IMSS con identificación oficial.</p>
+      <p><a href="https://www.imss.gob.mx/" target="_blank" rel="noopener">Portal oficial del IMSS — imss.gob.mx</a></p>
+    </div>
+    <div class="tramite">
+      <h4>Constancia de antecedentes no penales</h4>
+      <p>La constancia federal se tramita ante el Órgano Administrativo Desconcentrado Prevención y Readaptación Social, y en cada estado ante su Fiscalía o Secretaría de Seguridad. Los requisitos y costos varían por entidad; verifica siempre en el portal oficial de tu estado.</p>
+      <p><a href="https://www.gob.mx/prevencionyreadaptacion" target="_blank" rel="noopener">Portal oficial — gob.mx/prevencionyreadaptacion</a></p>
+    </div>
+    <p class="muted">Si alguien te cobra por "venderte" un documento oficial gratuito o te pide tu contraseña del SAT, es fraude. Repórtalo y no compartas tus credenciales con nadie.</p>
+  </div>
+</section>
+
+<!-- ============ CÓMO FUNCIONA ============ -->
+<section id="como-funciona">
+  <div class="container">
+    <h2 class="sec-title">Cómo funciona</h2>
+    <p class="sec-sub">De tu celular a tu PDF en 4 pasos.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><b>Completa tus datos</b><p class="muted">Elige tu diseño favorito y llena el formulario con tu información profesional.</p></div>
+      <div class="step"><div class="n">2</div><b>Revisa la vista previa</b><p class="muted">Ve cómo queda tu currículum antes de pagar. Puedes editar todo las veces que quieras.</p></div>
+      <div class="step"><div class="n">3</div><b>Paga en OXXO</b><p class="muted">Deposita en efectivo en cualquier OXXO y verifica tu pago con la clave de rastreo de tu ticket.</p></div>
+      <div class="step"><div class="n">4</div><b>Descarga tu PDF</b><p class="muted">Al verificarse tu depósito, tu PDF final sin marca de agua queda desbloqueado al instante.</p></div>
+    </div>
+
+    <h2 class="sec-title" style="margin-top:28px">Ventajas de DocuFácil México</h2>
+    <ul class="check-list">
+      <li><b>Rápido:</b> tu currículum listo en minutos, desde el celular.</li>
+      <li><b>Profesional:</b> 5 diseños hechos para reclutadores en México.</li>
+      <li><b>Seguro:</b> el pago se verifica en el servidor; tu PDF solo se desbloquea con un pago aprobado.</li>
+      <li><b>Transparente:</b> precio fijo de $99 MXN, sin cargos escondidos ni suscripciones.</li>
+      <li><b>Siempre disponible:</b> descarga tu PDF de nuevo cuando lo necesites, desde "Mi pedido".</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ GENERADOR DE CURRÍCULUM ============ -->
+<section id="generador" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="container">
+    <h2 class="sec-title">Crea tu currículum profesional</h2>
+    <p class="sec-sub">Completa tus datos, elige un diseño y revisa la vista previa. El PDF final sin marca de agua se desbloquea al verificar tu depósito en OXXO de <b id="cvPriceLabel">$99.00 MXN</b>.</p>
+
+    <form id="cvForm" novalidate>
+      <div class="card">
+        <h3 style="color:var(--navy)">1. Elige tu diseño</h3>
+        <div class="tpl-grid" id="tplGrid">
+          <button type="button" class="tpl-btn" data-template="ejecutivo"><span class="tpl-swatch sw-ejecutivo"></span><b>Ejecutivo</b><span>Clásico y serio</span></button>
+          <button type="button" class="tpl-btn on" data-template="moderno"><span class="tpl-swatch sw-moderno"></span><b>Moderno</b><span>Azul y limpio</span></button>
+          <button type="button" class="tpl-btn" data-template="minimalista"><span class="tpl-swatch sw-minimalista"></span><b>Minimalista</b><span>Simple y elegante</span></button>
+          <button type="button" class="tpl-btn" data-template="profesional"><span class="tpl-swatch sw-profesional"></span><b>Profesional</b><span>Ordenado y formal</span></button>
+          <button type="button" class="tpl-btn" data-template="creativo"><span class="tpl-swatch sw-creativo"></span><b>Creativo</b><span>Con color y energía</span></button>
+        </div>
+
+        <h3 style="color:var(--navy);margin-top:22px">2. Tus datos personales</h3>
+        <label class="f" for="cvNombre">Nombre completo *</label>
+        <input type="text" id="cvNombre" placeholder="Ej. María Fernanda López García" autocomplete="name">
+        <div class="field-err" id="errNombre"></div>
+        <label class="f" for="cvTelefono">Teléfono *</label>
+        <input type="tel" id="cvTelefono" placeholder="Ej. 55 1234 5678" autocomplete="tel">
+        <div class="field-err" id="errTelefono"></div>
+        <label class="f" for="cvEmail">Correo electrónico *</label>
+        <input type="email" id="cvEmail" placeholder="Ej. tu-correo@ejemplo.com" autocomplete="email">
+        <div class="field-err" id="errEmail"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <label class="f" for="cvCiudad">Ciudad *</label>
+            <input type="text" id="cvCiudad" placeholder="Ej. Guadalajara">
+            <div class="field-err" id="errCiudad"></div>
+          </div>
+          <div>
+            <label class="f" for="cvEstado">Estado *</label>
+            <input type="text" id="cvEstado" placeholder="Ej. Jalisco">
+            <div class="field-err" id="errEstado"></div>
+          </div>
+        </div>
+        <label class="f" for="cvPerfil">Perfil profesional *</label>
+        <textarea id="cvPerfil" placeholder="Resume en 3 o 4 líneas quién eres, qué sabes hacer y qué buscas. Ej. Contadora con 5 años de experiencia en nóminas y estados financieros..."></textarea>
+        <div class="field-err" id="errPerfil"></div>
+        <label class="f" for="cvFoto">Fotografía (opcional)</label>
+        <input type="file" id="cvFoto" accept="image/*">
+        <div id="fotoWrap" class="hidden" style="margin-top:10px">
+          <img id="fotoPreview" alt="Tu fotografía" style="width:90px;height:112px;object-fit:cover;border-radius:10px;border:2px solid var(--line)">
+          <br><button type="button" class="btn-del" id="btnQuitarFoto">Quitar fotografía</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3 style="color:var(--navy)">3. Experiencia laboral</h3>
+        <div id="expList"></div>
+        <button type="button" class="btn btn-outline btn-sm" id="btnAddExp">+ Agregar experiencia</button>
+
+        <h3 style="color:var(--navy);margin-top:20px">4. Estudios</h3>
+        <div id="eduList"></div>
+        <button type="button" class="btn btn-outline btn-sm" id="btnAddEdu">+ Agregar estudio</button>
+
+        <h3 style="color:var(--navy);margin-top:20px">5. Habilidades</h3>
+        <label class="f" for="cvHabilidades">Escribe tus habilidades separadas por comas</label>
+        <textarea id="cvHabilidades" placeholder="Ej. Excel avanzado, Atención al cliente, Trabajo en equipo, Inglés conversacional"></textarea>
+
+        <h3 style="color:var(--navy);margin-top:20px">6. Idiomas</h3>
+        <div id="langList"></div>
+        <button type="button" class="btn btn-outline btn-sm" id="btnAddLang">+ Agregar idioma</button>
+
+        <h3 style="color:var(--navy);margin-top:20px">7. Cursos y certificaciones</h3>
+        <div id="courseList"></div>
+        <button type="button" class="btn btn-outline btn-sm" id="btnAddCourse">+ Agregar curso o certificación</button>
+      </div>
+    </form>
+
+    <!-- Vista previa -->
+    <h3 style="color:var(--navy);margin:22px 0 10px">Vista previa (con marca de agua)</h3>
+    <p class="muted">Esta vista previa tiene marca de agua y no se puede descargar como documento final. El PDF sin marca de agua se desbloquea al verificar tu depósito en OXXO.</p>
+    <div class="preview-wrap">
+      <div class="cv-preview tpl-moderno" id="cvPreview"></div>
+      <div class="watermark"><span>VISTA PREVIA — DOCUFÁCIL</span></div>
+    </div>
+
+    <!-- Pago del currículum (el bloque de pago y verificación es compartido, está abajo) -->
+    <div class="card" style="margin-top:16px">
+      <button type="button" class="btn btn-yellow btn-block" id="btnPagar" style="font-size:17px">Pagar $99.00 MXN en OXXO</button>
+      <p class="muted" style="margin:10px 0 0">Paga en efectivo en cualquier OXXO. Tu documento se desbloquea automáticamente al verificar tu depósito. Puedes editar tus datos antes de pagar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GENERADOR DE PRODUCTO (17 productos) ============ -->
+<section id="generador-producto" class="hidden" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="container">
+    <h2 class="sec-title" id="prodGenTitle">Crea tu documento</h2>
+    <p class="sec-sub" id="prodGenDesc"></p>
+    <p style="font-size:18px;font-weight:800;color:var(--navy)">Precio: <span id="prodGenPrice">$0.00 MXN</span> <span class="muted" style="font-size:13px;font-weight:400">&middot; Digital &middot; Pago &uacute;nico</span></p>
+    <div class="card">
+      <div id="prodForm"></div>
+      <p id="prodLegal" class="muted" style="font-size:13px;margin:12px 0 0"></p>
+      <p id="prodFormMsg" style="font-size:14px;margin:10px 0 0"></p>
+    </div>
+    <h3 style="color:var(--navy);margin:22px 0 10px">Vista previa (con marca de agua)</h3>
+    <p class="muted">Esta vista previa tiene marca de agua y no se puede descargar como documento final. El PDF sin marca de agua se desbloquea al verificar tu depósito en OXXO.</p>
+    <div class="preview-wrap">
+      <div class="cv-preview" id="prodPreview"></div>
+      <div class="watermark"><span>VISTA PREVIA — DOCUFÁCIL</span></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <button type="button" class="btn btn-yellow btn-block" id="btnPagarProd" style="font-size:17px">Pagar y desbloquear PDF</button>
+      <p class="muted" style="margin:10px 0 0">Paga en efectivo en cualquier OXXO. Tu documento se desbloquea automáticamente al verificar tu depósito. Puedes editar tus datos antes de pagar.</p>
+      <p id="prodPayMsg" style="font-size:14px;margin:10px 0 0"></p>
+      <p style="margin:10px 0 0"><button type="button" class="btn btn-outline btn-sm" onclick="selectCV()">← Volver al currículum</button></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGO Y VERIFICACIÓN (compartido: CV y productos) ============ -->
+<section id="pago" style="background:var(--bg)">
+  <div class="container">
+    <div class="card">
+      <div id="orderStatusBox" class="hidden"></div>
+      <p id="payMsg" style="font-size:14px;margin:10px 0 0"></p>
+      <!-- Pago en OXXO + verificación por clave de rastreo -->
+      <div id="oxxoBox" class="hidden" style="margin-top:16px;border:2px solid var(--green);border-radius:12px;padding:16px;background:#F3FBF6">
+        <h3 style="color:var(--navy);margin-top:0">Paga en efectivo en OXXO</h3>
+        <p style="font-size:14.5px">Deposita <b id="oxxoMonto">$99.00 MXN</b> en efectivo en cualquier OXXO a esta cuenta:</p>
+        <p style="font-size:15px;margin:6px 0"><b>CLABE:</b> <span id="oxxoClabe">—</span></p>
+        <p style="font-size:15px;margin:6px 0"><b>Banco:</b> <span id="oxxoBanco">—</span></p>
+        <p style="font-size:15px;margin:6px 0"><b>Beneficiario:</b> <span id="oxxoBeneficiario">—</span></p>
+        <p style="font-size:15px;margin:6px 0"><b>Referencia (folio):</b> <span id="oxxoRef">—</span></p>
+        <p class="muted">Guarda tu ticket: lo vas a necesitar para verificar tu pago. El depósito debe ser por el monto exacto.</p>
+        <h3 style="color:var(--navy);margin-top:18px">Verifica tu pago</h3>
+        <p class="muted">Escribe los datos de tu ticket. Cuando el depósito se confirme, tu PDF se desbloquea automáticamente.</p>
+        <label class="f" for="vfClave">Clave de rastreo (la de tu ticket) *</label>
+        <input type="text" id="vfClave" placeholder="Ej. 20261106ABC123" autocomplete="off">
+        <label class="f" for="vfFecha">Fecha del depósito *</label>
+        <input type="date" id="vfFecha">
+        <label class="f" for="vfBanco">Banco desde el que depositaste *</label>
+        <select id="vfBanco">
+          <option value="OXXO">OXXO</option>
+          <option value="STP">STP</option>
+          <option value="BBVA">BBVA</option>
+          <option value="Banamex">Banamex</option>
+          <option value="Santander">Santander</option>
+          <option value="HSBC">HSBC</option>
+          <option value="otro">Otro</option>
+        </select>
+        <label class="f" for="vfMonto">Monto depositado (MXN) *</label>
+        <input type="number" id="vfMonto" min="0" step="0.01" placeholder="99.00">
+        <div style="height:12px"></div>
+        <button type="button" class="btn btn-blue btn-block" id="btnVerificar">Verificar mi pago</button>
+        <p id="vfMsg" style="font-size:14px;margin:10px 0 0"></p>
+      </div>
+      <div id="paidActions" class="hidden" style="margin-top:14px">
+        <button type="button" class="btn btn-blue btn-block" id="btnDescargar">Descargar mi PDF</button>
+        <button type="button" class="btn btn-outline btn-block" id="btnCompartir" style="margin-top:10px">Compartir mi documento</button>
+        <p id="shareRow" class="hidden" style="font-size:13px;margin:10px 0 0;word-break:break-all"></p>
+        <button type="button" class="btn btn-outline btn-block hidden" id="btnReintentar" style="margin-top:10px">Reintentar verificación</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MI PEDIDO ============ -->
+<section id="mi-pedido">
+  <div class="container">
+    <h2 class="sec-title">Mi pedido</h2>
+    <p class="sec-sub">Consulta el estado de tu pedido con tu folio. Si tu pago fue aprobado, puedes descargar tu PDF de nuevo.</p>
+    <div class="card">
+      <label class="f" for="lookupId">Folio del pedido</label>
+      <input type="text" id="lookupId" placeholder="Ej. DF-ABC1234" autocomplete="off">
+      <label class="f" for="lookupToken">Token de acceso (opcional, viene en tu enlace seguro)</label>
+      <input type="text" id="lookupToken" placeholder="Pégalo aquí si lo tienes" autocomplete="off">
+      <div style="height:12px"></div>
+      <button type="button" class="btn btn-blue btn-block" id="btnBuscarPedido">Consultar mi pedido</button>
+      <div id="pedidoResult" style="margin-top:14px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREGUNTAS FRECUENTES ============ -->
+<section id="preguntas" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="container">
+    <h2 class="sec-title">Preguntas frecuentes</h2>
+    <div class="faq-item">
+      <button type="button" class="faq-q">¿Cómo recibo mi currículum? <span>+</span></button>
+      <div class="faq-a">Al verificarse tu depósito en OXXO, tu PDF final sin marca de agua queda desbloqueado en esta misma página y puedes descargarlo de inmediato. También puedes volver a descargarlo cuando quieras desde "Mi pedido" con tu folio.</div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-q">¿Puedo editar mi currículum antes de pagar? <span>+</span></button>
+      <div class="faq-a">Sí. Puedes editar todos tus datos las veces que quieras antes de pagar; la vista previa se actualiza en vivo. Después de pagar, el documento queda con los datos de tu pedido.</div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-q">¿Qué pasa si mi pago es rechazado? <span>+</span></button>
+      <div class="faq-a">Tu documento sigue bloqueado y no pierdes tu información: puedes verificarlo de nuevo con el botón "Reintentar verificación" sin volver a llenar el formulario.</div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-q">¿El pago es seguro? <span>+</span></button>
+      <div class="faq-a">Sí. Pagas en efectivo en OXXO, directamente a la cuenta indicada, sin dar tus datos bancarios en esta página. DocuFácil México no guarda tus datos bancarios ni tus contraseñas. Tu documento solo se desbloquea cuando nuestro servidor verifica que el depósito realmente entró a la cuenta.</div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-q">¿Venden actas de nacimiento, RFC o CURP? <span>+</span></button>
+      <div class="faq-a">No. Esos son documentos oficiales y gratuitos (o con tarifa oficial) que solo expiden las dependencias del gobierno. En la sección de trámites te orientamos sobre dónde obtenerlos. DocuFácil México solo crea documentos personales y profesionales, como currículums y cartas.</div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-q">¿Puedo compartir mi currículum con un enlace? <span>+</span></button>
+      <div class="faq-a">Sí. Al pagar, recibes un enlace seguro con un token para compartir tu documento. El enlace solo funciona si el pago fue aprobado y el token coincide.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<section id="contacto">
+  <div class="container">
+    <h2 class="sec-title">Contacto</h2>
+    <div class="card">
+      <p><b>Correo:</b> <a href="mailto:contacto@docufacilmexico.com">contacto@docufacilmexico.com</a></p>
+      <p><b>Horario de atención:</b> lunes a viernes, 9:00 a 18:00 (hora del centro de México).</p>
+      <p class="muted">¿Tienes un problema con tu pedido? Escríbenos con tu folio (empieza con DF-) y te ayudamos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AVISO DE PRIVACIDAD Y TÉRMINOS ============ -->
+<section id="legal" style="background:#fff;border-top:1px solid var(--line)">
+  <div class="container">
+    <h2 class="sec-title">Aviso de privacidad</h2>
+    <div class="legal">
+      <h4>Responsable del tratamiento de tus datos personales</h4>
+      <p>DocuFácil México es responsable del tratamiento de los datos personales que nos proporciones a través de esta página, en términos de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) y su Reglamento.</p>
+      <h4>Datos que recabamos</h4>
+      <p>Recabamos únicamente los datos necesarios para generar tu documento y procesar tu compra: nombre completo, teléfono, correo electrónico, ciudad y estado, así como la información profesional que tú mismo escribas en el formulario (perfil, experiencia, estudios, habilidades, idiomas, cursos y, si tú decides subirla, tu fotografía).</p>
+      <h4>Finalidades</h4>
+      <p>Tus datos se usan exclusivamente para: (1) generar el documento que solicitaste; (2) procesar y verificar tu pago en OXXO; (3) permitirte descargar tu documento y consultarlo con tu folio; (4) atender tus dudas y solicitudes de soporte; y (5) cumplir obligaciones fiscales y legales.</p>
+      <h4>Datos bancarios y credenciales</h4>
+      <p>No recabamos ni almacenamos datos bancarios completos, números de tarjeta, contraseñas del SAT, e.firma ni ninguna credencial oficial o bancaria. Los depósitos se hacen en efectivo en OXXO a la cuenta indicada; la verificación se hace contra el comprobante bancario (clave de rastreo) y no tenemos acceso a tus cuentas bancarias.</p>
+      <h4>Transferencias</h4>
+      <p>No vendemos ni compartimos tus datos personales con terceros para fines publicitarios. Solo se comparten los datos indispensables con el proveedor de verificación de depósitos para confirmar tu pago, y con las autoridades cuando la ley lo exija.</p>
+      <h4>Derechos ARCO</h4>
+      <p>Tienes derecho a acceder, rectificar, cancelar u oponerte al tratamiento de tus datos personales (derechos ARCO), así como a revocar tu consentimiento. Para ejercerlos, escríbenos a contacto@docufacilmexico.com indicando tu nombre, tu folio de pedido y el derecho que deseas ejercer. Responderemos en un plazo máximo de 20 días hábiles.</p>
+      <h4>Conservación y eliminación</h4>
+      <p>Conservamos tus datos solo el tiempo necesario para prestarte el servicio y cumplir nuestras obligaciones legales. Puedes pedir la eliminación de tus datos escribiéndonos; la eliminaremos salvo que debamos conservarlos por obligación legal o fiscal.</p>
+    </div>
+
+    <h2 class="sec-title">Términos y condiciones</h2>
+    <div class="legal">
+      <h4>1. El servicio</h4>
+      <p>DocuFácil México es una plataforma que genera documentos personales y profesionales (como currículums y cartas) a partir de la información que el cliente proporciona. El cliente es responsable de la veracidad de sus datos.</p>
+      <h4>2. Precios y pagos</h4>
+      <p>Los precios están en pesos mexicanos (MXN) e incluyen impuestos aplicables. El pago se realiza en efectivo en OXXO, depositando el monto exacto a la cuenta indicada. El documento final se desbloquea únicamente cuando nuestro servidor verifica que el depósito realmente entró a la cuenta (monto, CLABE y clave de rastreo exactos) y marca el pedido como aprobado. Un pago pendiente, rechazado, cancelado o reembolsado no desbloquea el documento.</p>
+      <h4>3. Entrega</h4>
+      <p>La entrega es digital e inmediata tras la verificación de tu depósito: el cliente descarga su PDF desde esta página y puede volver a descargarlo desde "Mi pedido" con su folio. El cliente puede compartir su documento mediante un enlace seguro con token; ese enlace puede ser revocado por el administrador.</p>
+      <h4>4. Documentos oficiales</h4>
+      <p>DocuFácil México NO expide, vende ni fabrica documentos gubernamentales, certificados, constancias oficiales, sellos, firmas ni identificaciones. Tampoco se hace pasar por el SAT, IMSS, RENAPO ni ninguna dependencia. La sección de trámites es únicamente informativa y enlaza a portales oficiales.</p>
+      <h4>5. Reembolsos</h4>
+      <p>Por tratarse de un producto digital generado de forma personalizada y entregado de inmediato, no hay reembolsos una vez que el PDF final fue desbloqueado y descargado, salvo que el documento no se haya podido generar por un error de la plataforma. Si tu depósito no se pudo verificar, tu documento sigue bloqueado y puedes intentarlo de nuevo con los datos correctos de tu ticket.</p>
+      <h4>6. Uso aceptable</h4>
+      <p>El cliente se compromete a no usar la plataforma para generar documentos falsos, suplantar identidades o engañar a terceros. Nos reservamos el derecho de cancelar pedidos que violen estos términos.</p>
+      <h4>7. Cambios</h4>
+      <p>Nos reservamos el derecho de actualizar estos términos y los precios; los cambios no afectan pedidos ya pagados.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PIE DE PÁGINA ============ -->
+<footer class="site">
+  <div class="container">
+    <h4>DOCUFÁCIL MÉXICO</h4>
+    <p>Tus documentos, fáciles y rápidos.</p>
+    <p style="font-size:13.5px">
+      <a href="#inicio">Inicio</a> ·
+      <a href="#documentos">Documentos</a> ·
+      <a href="#generador">Crear CV</a> ·
+      <a href="#mi-pedido">Mi pedido</a> ·
+      <a href="#legal">Aviso de privacidad</a> ·
+      <a href="#legal">Términos y condiciones</a> ·
+      <a href="#admin" id="linkAdmin">Admin</a>
+    </p>
+    <p style="font-size:12.5px;color:#9FB4D2">© 2026 DocuFácil México. Todos los derechos reservados. Precios en pesos mexicanos (MXN).</p>
+  </div>
+</footer>
+
+<!-- ============ PANEL ADMINISTRATIVO ============ -->
+<section id="admin" style="background:var(--bg)">
+  <div class="container">
+    <h2 class="sec-title">Panel administrativo</h2>
+    <p class="sec-sub">Acceso exclusivo del propietario. Aquí se cambian precios, se activan productos y se consultan ventas.</p>
+    <div class="card" id="adminLoginBox">
+      <label class="f" for="adminPass">Contraseña de administrador</label>
+      <input type="password" id="adminPass" placeholder="Escribe tu contraseña" autocomplete="current-password">
+      <div style="height:12px"></div>
+      <button type="button" class="btn btn-navy btn-block" id="btnAdminLogin">Entrar al panel</button>
+      <p id="adminLoginMsg" style="font-size:14px;margin:10px 0 0"></p>
+    </div>
+    <div id="adminPanel" class="hidden">
+      <div class="stat-grid">
+        <div class="stat"><b id="statVentas">0</b><span>Ventas aprobadas</span></div>
+        <div class="stat"><b id="statIngresos">$0.00</b><span>Ingresos (MXN)</span></div>
+        <div class="stat"><b id="statPendientes">0</b><span>Pedidos pendientes</span></div>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <h3 style="color:var(--navy)">Ventas por documento</h3>
+        <p class="muted">Cuántas ventas aprobadas generó cada documento.</p>
+        <div id="statPorProducto"><p class="muted">Aún no hay ventas.</p></div>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <h3 style="color:var(--navy)">Productos y precios</h3>
+        <p class="muted">Cambia el precio o activa/desactiva un producto sin tocar el código. Los cambios se aplican de inmediato en la tienda.</p>
+        <div id="cfgProducts"></div>
+        <div style="height:12px"></div>
+        <button type="button" class="btn btn-blue" id="btnGuardarConfig">Guardar cambios</button>
+        <span id="adminMsg" style="font-size:14px;margin-left:10px"></span>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--navy)">Pedidos</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Folio</th><th>Cliente</th><th>Producto</th><th>Monto</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr></thead>
+            <tbody id="adminOrdersBody"><tr><td colspan="7" class="muted">Cargando pedidos…</td></tr></tbody>
+          </table>
+        </div>
+        <div style="height:14px"></div>
+        <button type="button" class="btn btn-outline" id="btnDescargarCSV">Descargar reporte CSV de ventas</button>
+        <button type="button" class="btn btn-outline" id="btnAdminSalir" style="margin-left:8px">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* DOCUFÁCIL MÉXICO — Motor de productos (17 productos, sin incluir el CV).
+   Archivo autocontenido, ES5-compatible. Se incrusta en index.html como un
+   bloque <script> más. No depende de funciones de index.html.
+   Solo usa window.jspdf.jsPDF para generar PDFs. No guarda nada en
+   localStorage. No incluye checkout ni claves. */
+var DFProducts = (function () {
+  "use strict";
+
+  var MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+  var LEGAL = {
+    poder: "Aviso: una carta poder sencilla no sustituye los poderes notariales ni garantiza su aceptación por todas las instituciones.",
+    contrato: "Aviso: este documento es una plantilla general, no asesoría jurídica personalizada. Las partes deben revisar el contenido y buscar asesoría legal cuando sea necesario."
+  };
+
+  /* Campos de nombres/lugares que normalizeData capitaliza. */
+  var NAME_KEYS = ["nombre", "empresa", "ciudad", "lugar", "destinatario",
+    "otorgante", "apoderado", "arrendador", "inquilino", "vendedor",
+    "comprador", "prestador", "cliente", "recomienda", "recomendado",
+    "autoriza", "autorizado", "emite", "paga", "recibe", "entrega"];
+
+  /* ---------------- ayudantes internos ---------------- */
+
+  function esc(s) {
+    if (s === null || s === undefined) return "";
+    s = String(s);
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function trimStr(s) {
+    if (s === null || s === undefined) return "";
+    return String(s).replace(/^\s+|\s+$/g, "");
+  }
+
+  function collapseSpaces(s) {
+    return trimStr(s).replace(/\s+/g, " ");
+  }
+
+  function titleCase(s) {
+    var parts = collapseSpaces(s).split(" ");
+    var out = [];
+    var i, w;
+    for (i = 0; i < parts.length; i++) {
+      w = parts[i];
+      if (w.length === 0) continue;
+      out.push(w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+    }
+    return out.join(" ");
+  }
+
+  function formatDate(v) {
+    if (v === null || v === undefined || v === "") return "";
+    var s = String(v);
+    var m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) {
+      var d = parseInt(m[3], 10);
+      var mo = parseInt(m[2], 10);
+      var y = parseInt(m[1], 10);
+      if (mo >= 1 && mo <= 12) {
+        return d + " de " + MONTHS[mo - 1] + " de " + y;
+      }
+    }
+    return s;
+  }
+
+  function todayStr() {
+    var n = new Date();
+    return n.getDate() + " de " + MONTHS[n.getMonth()] + " de " + n.getFullYear();
+  }
+
+  function formatNumber(v) {
+    var s = String(v);
+    var parts = s.split(".");
+    var intPart = parts[0];
+    var neg = "";
+    if (intPart.charAt(0) === "-") {
+      neg = "-";
+      intPart = intPart.slice(1);
+    }
+    intPart = intPart.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    if (parts.length > 1) return neg + intPart + "." + parts[1];
+    return neg + intPart;
+  }
+
+  function isDateKey(k) {
+    return k === "fecha" || k === "fechaPresentacion" || k === "fechaSalida";
+  }
+
+  /* Sustituye {campo} por su valor. Con doEscape=true escapa para HTML.
+     Los campos vacíos se muestran como "—". Las fechas se formatean. */
+  function fillTpl(tpl, data, doEscape) {
+    return tpl.replace(/\{([a-zA-Z0-9_]+)\}/g, function (match, key) {
+      var v = data[key];
+      if (v === null || v === undefined || v === "") return "—";
+      if (typeof v === "number") v = formatNumber(v);
+      else v = String(v);
+      if (isDateKey(key)) v = formatDate(v);
+      if (doEscape) v = esc(v);
+      return v;
+    });
+  }
+
+  function filledParas(parrafos, data, doEscape) {
+    var out = [];
+    var i, t;
+    for (i = 0; i < parrafos.length; i++) {
+      t = fillTpl(parrafos[i], data, doEscape);
+      if (t === "—") continue; /* párrafo de un campo opcional vacío */
+      out.push(t);
+    }
+    return out;
+  }
+
+  function displayFieldVal(field, v) {
+    if (v === null || v === undefined || v === "") return "—";
+    if (field.type === "date") return formatDate(v);
+    if (field.type === "number") return formatNumber(v);
+    return String(v);
+  }
+
+  function fieldByKey(p, key) {
+    var i;
+    for (i = 0; i < p.fields.length; i++) {
+      if (p.fields[i].key === key) return p.fields[i];
+    }
+    return null;
+  }
+
+  function headerPlaceDate(data) {
+    var place = data.ciudad || data.lugar || "";
+    var dateVal = data.fecha || data.fechaPresentacion || "";
+    var dateStr = dateVal ? formatDate(dateVal) : todayStr();
+    if (place) return place + ", " + dateStr;
+    return dateStr;
+  }
+
+  /* ---------------- catálogo: 17 productos ---------------- */
+
+  var PRODUCTS = [
+    /* ---------- Profesionales ---------- */
+    {
+      id: "carta-presentacion",
+      name: "Carta de presentación",
+      description: "Carta formal para postularte a un puesto de trabajo.",
+      category: "profesionales",
+      price: 49,
+      docType: "carta",
+      fields: [
+        { key: "nombre", label: "Nombre completo", type: "text", required: true },
+        { key: "telefono", label: "Teléfono", type: "tel", required: true },
+        { key: "correo", label: "Correo electrónico", type: "email", required: true },
+        { key: "ciudad", label: "Ciudad", type: "text", required: true },
+        { key: "empresa", label: "Empresa a la que te postulas", type: "text", required: true },
+        { key: "puesto", label: "Puesto al que te postulas", type: "text", required: true },
+        { key: "experiencia", label: "Experiencia laboral", type: "textarea", required: true },
+        { key: "habilidades", label: "Habilidades", type: "textarea", required: true },
+        { key: "mensaje", label: "Mensaje para la empresa", type: "textarea", required: true }
+      ],
+      doc: {
+        destinatarioKey: "empresa",
+        saludo: "Estimado equipo de reclutamiento de {empresa}:",
+        parrafos: [
+          "Me dirijo a ustedes con el propósito de expresar mi interés en el puesto de {puesto} en {empresa}, convencido de que mi perfil profesional se ajusta a las necesidades de su organización.",
+          "Cuento con experiencia en {experiencia}. A lo largo de mi trayectoria he desarrollado habilidades como {habilidades}, las cuales me permiten aportar valor desde el primer día.",
+          "{mensaje}",
+          "Quedo a su disposición para una entrevista en el momento que consideren oportuno. Pueden contactarme al teléfono {telefono} o al correo electrónico {correo}."
+        ],
+        firma: { nombreKey: "nombre", cargoKey: null, etiqueta: "" }
+      }
+    },
+    {
+      id: "carta-recomendacion",
+      name: "Carta de recomendación",
+      description: "Recomienda a una persona para un trabajo o trámite.",
+      category: "profesionales",
+      price: 49,
+      docType: "carta",
+      fields: [
+        { key: "recomendado", label: "Nombre de la persona recomendada", type: "text", required: true },
+        { key: "recomienda", label: "Nombre de quien recomienda", type: "text", required: true },
+        { key: "relacion", label: "Relación entre ambas personas", type: "text", required: true },
+        { key: "tiempo", label: "Tiempo de conocimiento", type: "text", required: true },
+        { key: "cualidades", label: "Cualidades y motivos de recomendación", type: "textarea", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "ciudad", label: "Ciudad", type: "text", required: true }
+      ],
+      doc: {
+        destinatarioKey: null,
+        saludo: "A quien corresponda:",
+        parrafos: [
+          "Por medio de la presente, yo, {recomienda}, me permito recomendar ampliamente a {recomendado}, a quien conozco desde hace {tiempo} en mi calidad de {relacion}.",
+          "Durante este tiempo he podido constatar sus cualidades, entre las que destacan {cualidades}.",
+          "Por lo anterior, no tengo duda de que {recomendado} desempeñará con responsabilidad y compromiso cualquier actividad o puesto que se le confíe, por lo que recomiendo su candidatura sin reservas."
+        ],
+        firma: { nombreKey: "recomienda", cargoKey: null, etiqueta: "" }
+      }
+    },
+    {
+      id: "solicitud-empleo",
+      name: "Solicitud de empleo",
+      description: "Formato de solicitud de empleo listo para entregar.",
+      category: "profesionales",
+      price: 49,
+      docType: "formato",
+      fields: [
+        { key: "nombre", label: "Nombre completo", type: "text", required: true },
+        { key: "telefono", label: "Teléfono", type: "tel", required: true },
+        { key: "correo", label: "Correo electrónico", type: "email", required: true },
+        { key: "direccion", label: "Dirección", type: "text", required: true },
+        { key: "escolaridad", label: "Escolaridad", type: "textarea", required: true },
+        { key: "experiencia", label: "Experiencia laboral", type: "textarea", required: true },
+        { key: "referencias", label: "Referencias", type: "textarea", required: false },
+        { key: "habilidades", label: "Habilidades", type: "textarea", required: true },
+        { key: "disponibilidad", label: "Disponibilidad", type: "text", required: true }
+      ],
+      doc: {
+        titulo: "Solicitud de Empleo",
+        camposMostrar: ["nombre", "telefono", "correo", "direccion", "escolaridad", "experiencia", "habilidades", "referencias", "disponibilidad"],
+        firma: { nombreKey: "nombre", etiqueta: "Solicitante" }
+      }
+    },
+    {
+      id: "carta-renuncia",
+      name: "Carta de renuncia",
+      description: "Renuncia formal a tu puesto de trabajo.",
+      category: "profesionales",
+      price: 49,
+      docType: "carta",
+      fields: [
+        { key: "nombre", label: "Nombre del trabajador", type: "text", required: true },
+        { key: "empresa", label: "Empresa", type: "text", required: true },
+        { key: "puesto", label: "Puesto", type: "text", required: true },
+        { key: "fechaPresentacion", label: "Fecha de presentación", type: "date", required: true },
+        { key: "fechaSalida", label: "Fecha efectiva de salida", type: "date", required: true },
+        { key: "mensaje", label: "Mensaje opcional", type: "textarea", required: false },
+        { key: "ciudad", label: "Ciudad", type: "text", required: true }
+      ],
+      doc: {
+        destinatarioKey: "empresa",
+        saludo: "Estimado(a) responsable de {empresa}:",
+        parrafos: [
+          "Por medio de la presente, yo, {nombre}, quien me desempeño como {puesto} en {empresa}, comunico formalmente mi renuncia voluntaria al puesto, con fecha efectiva de salida el {fechaSalida}.",
+          "Agradezco la confianza y las oportunidades brindadas durante mi tiempo en la empresa, así como el apoyo de mis compañeros y superiores.",
+          "{mensaje}"
+        ],
+        firma: { nombreKey: "nombre", cargoKey: null, etiqueta: "" }
+      }
+    },
+    {
+      id: "carta-laboral",
+      name: "Carta laboral",
+      description: "Constancia laboral emitida por tu empresa o patrón.",
+      category: "profesionales",
+      price: 59,
+      docType: "carta",
+      fields: [
+        { key: "nombre", label: "Nombre del trabajador", type: "text", required: true },
+        { key: "empresa", label: "Empresa", type: "text", required: true },
+        { key: "puesto", label: "Puesto", type: "text", required: true },
+        { key: "periodo", label: "Periodo laboral", type: "text", required: true },
+        { key: "funciones", label: "Funciones desempeñadas", type: "textarea", required: true },
+        { key: "emite", label: "Nombre de quien emite la carta", type: "text", required: true },
+        { key: "cargoEmite", label: "Cargo de quien emite", type: "text", required: true },
+        { key: "ciudad", label: "Ciudad", type: "text", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true }
+      ],
+      doc: {
+        destinatarioKey: null,
+        saludo: "A quien corresponda:",
+        parrafos: [
+          "Por medio de la presente se hace constar que {nombre} laboró en {empresa}, desempeñando el puesto de {puesto} durante el periodo de {periodo}.",
+          "Entre sus funciones principales se encontraban: {funciones}.",
+          "Durante su estancia demostró responsabilidad, compromiso y un desempeño satisfactorio en las actividades encomendadas.",
+          "Se extiende la presente a solicitud del interesado, para los fines que estime convenientes."
+        ],
+        firma: { nombreKey: "emite", cargoKey: "cargoEmite", etiqueta: "" }
+      }
+    },
+    /* ---------- Personales ---------- */
+    {
+      id: "carta-autorizacion",
+      name: "Carta de autorización",
+      description: "Autoriza a otra persona a realizar una actividad en tu nombre.",
+      category: "personales",
+      price: 49,
+      docType: "carta",
+      fields: [
+        { key: "autoriza", label: "Nombre de quien autoriza", type: "text", required: true },
+        { key: "autorizado", label: "Nombre de la persona autorizada", type: "text", required: true },
+        { key: "motivo", label: "Motivo de la autorización", type: "text", required: true },
+        { key: "actividad", label: "Actividad autorizada", type: "text", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "lugar", label: "Lugar", type: "text", required: true }
+      ],
+      doc: {
+        destinatarioKey: null,
+        saludo: "A quien corresponda:",
+        parrafos: [
+          "Por medio de la presente, yo, {autoriza}, autorizo a {autorizado} para realizar {actividad}.",
+          "La presente autorización se otorga con motivo de {motivo} y tendrá vigencia a partir de la fecha indicada en este documento.",
+          "Agradezco de antemano la atención brindada y quedo a su disposición para cualquier aclaración."
+        ],
+        firma: { nombreKey: "autoriza", cargoKey: null, etiqueta: "" }
+      }
+    },
+    {
+      id: "carta-poder",
+      name: "Carta poder",
+      description: "Carta poder sencilla para trámites y gestiones.",
+      category: "personales",
+      price: 99,
+      docType: "carta",
+      legal: "poder",
+      fields: [
+        { key: "otorgante", label: "Nombre del otorgante", type: "text", required: true },
+        { key: "apoderado", label: "Nombre del apoderado", type: "text", required: true },
+        { key: "motivo", label: "Motivo del poder", type: "text", required: true },
+        { key: "alcance", label: "Alcance de la autorización", type: "textarea", required: true },
+        { key: "vigencia", label: "Vigencia", type: "text", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "lugar", label: "Lugar", type: "text", required: true },
+        { key: "testigo1", label: "Testigo 1 (nombre)", type: "text", required: false },
+        { key: "testigo2", label: "Testigo 2 (nombre)", type: "text", required: false }
+      ],
+      doc: {
+        destinatarioKey: null,
+        saludo: "A quien corresponda:",
+        parrafos: [
+          "Por medio de la presente, yo, {otorgante}, otorgo poder a {apoderado} para que en mi nombre y representación realice los actos descritos en el presente documento.",
+          "Motivo del poder: {motivo}.",
+          "Alcance de la autorización: {alcance}.",
+          "El presente poder tendrá una vigencia de {vigencia} a partir de la fecha de su expedición."
+        ],
+        firma: { nombreKey: "otorgante", cargoKey: null, etiqueta: "Otorgante" }
+      }
+    },
+    {
+      id: "carta-solicitud",
+      name: "Carta de solicitud",
+      description: "Solicita algo formalmente ante una persona o institución.",
+      category: "personales",
+      price: 49,
+      docType: "carta",
+      fields: [
+        { key: "destinatario", label: "Destinatario", type: "text", required: true },
+        { key: "nombre", label: "Nombre del solicitante", type: "text", required: true },
+        { key: "motivo", label: "Motivo de la solicitud", type: "text", required: true },
+        { key: "descripcion", label: "Descripción de la solicitud", type: "textarea", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "ciudad", label: "Ciudad", type: "text", required: true }
+      ],
+      doc: {
+        destinatarioKey: "destinatario",
+        saludo: "Estimado(a) {destinatario}:",
+        parrafos: [
+          "Por medio de la presente, yo, {nombre}, me dirijo a usted con el propósito de solicitar su apoyo respecto a {motivo}.",
+          "{descripcion}",
+          "Agradezco de antemano la atención que se sirva brindar a la presente solicitud y quedo a la espera de su favorable respuesta."
+        ],
+        firma: { nombreKey: "nombre", cargoKey: null, etiqueta: "" }
+      }
+    },
+    {
+      id: "carta-presentacion-personal",
+      name: "Carta de presentación personal",
+      description: "Preséntate formalmente para un trámite o una oportunidad.",
+      category: "personales",
+      price: 49,
+      docType: "carta",
+      fields: [
+        { key: "nombre", label: "Nombre completo", type: "text", required: true },
+        { key: "telefono", label: "Teléfono", type: "tel", required: true },
+        { key: "correo", label: "Correo electrónico", type: "email", required: true },
+        { key: "objetivo", label: "Objetivo de la carta", type: "textarea", required: true },
+        { key: "experiencia", label: "Experiencia o cualidades", type: "textarea", required: true },
+        { key: "mensaje", label: "Mensaje personalizado", type: "textarea", required: true }
+      ],
+      doc: {
+        destinatarioKey: null,
+        saludo: "A quien corresponda:",
+        parrafos: [
+          "Me permito presentarme: mi nombre es {nombre} y el objetivo de esta carta es {objetivo}.",
+          "Cuento con la siguiente experiencia y cualidades: {experiencia}.",
+          "{mensaje}",
+          "Quedo a su disposición para cualquier información adicional. Pueden contactarme al teléfono {telefono} o al correo electrónico {correo}."
+        ],
+        firma: { nombreKey: "nombre", cargoKey: null, etiqueta: "" }
+      }
+    },
+    {
+      id: "formato-personalizado",
+      name: "Formato personalizado",
+      description: "Describe el documento que necesitas y lo armamos para ti.",
+      category: "personales",
+      price: 99,
+      docType: "formato",
+      fields: [
+        { key: "nombre", label: "Nombre completo", type: "text", required: true },
+        { key: "correo", label: "Correo electrónico", type: "email", required: true },
+        { key: "queNecesita", label: "¿Qué documento necesita?", type: "textarea", required: true },
+        { key: "paraQue", label: "¿Para qué lo utilizará?", type: "textarea", required: true },
+        { key: "queIncluir", label: "¿Qué información debe incluir?", type: "textarea", required: true }
+      ],
+      doc: {
+        titulo: "Formato Personalizado",
+        camposMostrar: ["nombre", "correo", "queNecesita", "paraQue", "queIncluir"],
+        firma: { nombreKey: "nombre", etiqueta: "Solicitante" }
+      }
+    },
+    /* ---------- Formatos ---------- */
+    {
+      id: "contrato-servicios",
+      name: "Contrato de prestación de servicios",
+      description: "Contrato para prestar un servicio con precio y plazo claros.",
+      category: "formatos",
+      price: 199,
+      docType: "contrato",
+      legal: "contrato",
+      fields: [
+        { key: "prestador", label: "Prestador del servicio (nombre)", type: "text", required: true },
+        { key: "cliente", label: "Cliente (nombre)", type: "text", required: true },
+        { key: "descripcion", label: "Descripción del servicio", type: "textarea", required: true },
+        { key: "precio", label: "Precio (MXN)", type: "number", required: true },
+        { key: "formaPago", label: "Forma de pago", type: "text", required: true },
+        { key: "plazo", label: "Plazo", type: "text", required: true },
+        { key: "obligaciones", label: "Obligaciones de las partes", type: "textarea", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "lugar", label: "Lugar", type: "text", required: true }
+      ],
+      doc: {
+        titulo: "Contrato de Prestación de Servicios",
+        partes: [
+          { etiqueta: "Prestador del servicio", key: "prestador" },
+          { etiqueta: "Cliente", key: "cliente" }
+        ],
+        clausulas: [
+          { titulo: "Objeto", texto: "El prestador, {prestador}, se obliga a prestar al cliente, {cliente}, el siguiente servicio: {descripcion}." },
+          { titulo: "Precio y forma de pago", texto: "El precio total por el servicio es de {precio} MXN, pagaderos de la siguiente forma: {formaPago}." },
+          { titulo: "Plazo", texto: "El presente contrato tendrá el siguiente plazo: {plazo}." },
+          { titulo: "Obligaciones", texto: "Las partes se obligan a cumplir lo siguiente: {obligaciones}." },
+          { titulo: "Terminación", texto: "Cualquiera de las partes podrá dar por terminado el presente contrato por incumplimiento de la otra parte, previo aviso por escrito." },
+          { titulo: "Firmas", texto: "El presente contrato se firma en {lugar}, el {fecha}, en dos ejemplares de igual valor, uno para cada parte." }
+        ],
+        firmas: [
+          { key: "prestador", etiqueta: "El prestador" },
+          { key: "cliente", etiqueta: "El cliente" }
+        ]
+      }
+    },
+    {
+      id: "contrato-arrendamiento",
+      name: "Contrato de arrendamiento",
+      description: "Contrato de renta de un inmueble con depósito y duración.",
+      category: "formatos",
+      price: 199,
+      docType: "contrato",
+      legal: "contrato",
+      fields: [
+        { key: "arrendador", label: "Arrendador (nombre)", type: "text", required: true },
+        { key: "inquilino", label: "Inquilino (nombre)", type: "text", required: true },
+        { key: "inmueble", label: "Inmueble (dirección y descripción)", type: "textarea", required: true },
+        { key: "renta", label: "Renta mensual (MXN)", type: "number", required: true },
+        { key: "deposito", label: "Depósito (MXN)", type: "number", required: true },
+        { key: "duracion", label: "Duración", type: "text", required: true },
+        { key: "obligaciones", label: "Obligaciones de las partes", type: "textarea", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "lugar", label: "Lugar", type: "text", required: true }
+      ],
+      doc: {
+        titulo: "Contrato de Arrendamiento",
+        partes: [
+          { etiqueta: "Arrendador", key: "arrendador" },
+          { etiqueta: "Inquilino", key: "inquilino" }
+        ],
+        clausulas: [
+          { titulo: "Objeto", texto: "El arrendador, {arrendador}, da en arrendamiento al inquilino, {inquilino}, el inmueble ubicado en {inmueble}." },
+          { titulo: "Renta", texto: "La renta mensual será de {renta} MXN, pagadera dentro de los primeros días de cada mes." },
+          { titulo: "Depósito", texto: "El inquilino entrega en este acto la cantidad de {deposito} MXN en concepto de depósito en garantía, el cual será devuelto al término del contrato si el inmueble se encuentra en las mismas condiciones en que se recibió." },
+          { titulo: "Duración", texto: "El presente contrato tendrá una duración de {duracion}." },
+          { titulo: "Obligaciones", texto: "Las partes se obligan a cumplir lo siguiente: {obligaciones}." },
+          { titulo: "Firmas", texto: "El presente contrato se firma en {lugar}, el {fecha}, en dos ejemplares de igual valor, uno para cada parte." }
+        ],
+        firmas: [
+          { key: "arrendador", etiqueta: "El arrendador" },
+          { key: "inquilino", etiqueta: "El inquilino" }
+        ]
+      }
+    },
+    {
+      id: "contrato-compraventa",
+      name: "Contrato de compraventa",
+      description: "Contrato para la compra y venta de un bien.",
+      category: "formatos",
+      price: 149,
+      docType: "contrato",
+      legal: "contrato",
+      fields: [
+        { key: "vendedor", label: "Vendedor (nombre)", type: "text", required: true },
+        { key: "comprador", label: "Comprador (nombre)", type: "text", required: true },
+        { key: "descripcion", label: "Descripción del bien", type: "textarea", required: true },
+        { key: "precio", label: "Precio (MXN)", type: "number", required: true },
+        { key: "formaPago", label: "Forma de pago", type: "text", required: true },
+        { key: "entrega", label: "Entrega", type: "text", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "lugar", label: "Lugar", type: "text", required: true }
+      ],
+      doc: {
+        titulo: "Contrato de Compraventa",
+        partes: [
+          { etiqueta: "Vendedor", key: "vendedor" },
+          { etiqueta: "Comprador", key: "comprador" }
+        ],
+        clausulas: [
+          { titulo: "Objeto", texto: "El vendedor, {vendedor}, vende al comprador, {comprador}, el siguiente bien: {descripcion}." },
+          { titulo: "Precio y forma de pago", texto: "El precio total de la compraventa es de {precio} MXN, pagadero de la siguiente forma: {formaPago}." },
+          { titulo: "Entrega", texto: "La entrega del bien se realizará de la siguiente forma: {entrega}." },
+          { titulo: "Saneamiento", texto: "El vendedor declara que el bien se encuentra libre de gravámenes y que responde por los vicios ocultos conforme a la ley." },
+          { titulo: "Firmas", texto: "El presente contrato se firma en {lugar}, el {fecha}, en dos ejemplares de igual valor, uno para cada parte." }
+        ],
+        firmas: [
+          { key: "vendedor", etiqueta: "El vendedor" },
+          { key: "comprador", etiqueta: "El comprador" }
+        ]
+      }
+    },
+    {
+      id: "recibo-pago",
+      name: "Recibo de pago",
+      description: "Comprobante de que se recibió un pago.",
+      category: "formatos",
+      price: 39,
+      docType: "formato",
+      fields: [
+        { key: "paga", label: "Nombre de quien paga", type: "text", required: true },
+        { key: "recibe", label: "Nombre de quien recibe", type: "text", required: true },
+        { key: "cantidad", label: "Cantidad (MXN)", type: "number", required: true },
+        { key: "concepto", label: "Concepto", type: "text", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "metodo", label: "Método de pago", type: "text", required: true }
+      ],
+      doc: {
+        titulo: "Recibo de Pago",
+        camposMostrar: ["paga", "recibe", "cantidad", "concepto", "fecha", "metodo"],
+        firma: { nombreKey: "recibe", etiqueta: "Recibí conforme" }
+      }
+    },
+    {
+      id: "comprobante-entrega",
+      name: "Comprobante de entrega",
+      description: "Deja constancia de la entrega de un bien o documento.",
+      category: "formatos",
+      price: 39,
+      docType: "formato",
+      fields: [
+        { key: "entrega", label: "Persona que entrega", type: "text", required: true },
+        { key: "recibe", label: "Persona que recibe", type: "text", required: true },
+        { key: "descripcion", label: "Descripción de lo entregado", type: "textarea", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "observaciones", label: "Observaciones", type: "textarea", required: false }
+      ],
+      doc: {
+        titulo: "Comprobante de Entrega",
+        camposMostrar: ["entrega", "recibe", "descripcion", "fecha", "observaciones"],
+        firma: { nombreKey: "entrega", etiqueta: "Entregó" }
+      }
+    },
+    {
+      id: "formato-registro",
+      name: "Formato de registro",
+      description: "Formato de registro con campos personalizados.",
+      category: "formatos",
+      price: 49,
+      docType: "formato",
+      fields: [
+        { key: "nombre", label: "Nombre completo", type: "text", required: true },
+        { key: "telefono", label: "Teléfono", type: "tel", required: true },
+        { key: "correo", label: "Correo electrónico", type: "email", required: true },
+        { key: "campos", label: "Campos personalizados", type: "textarea", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "observaciones", label: "Espacio para observaciones", type: "textarea", required: false }
+      ],
+      doc: {
+        titulo: "Formato de Registro",
+        camposMostrar: ["nombre", "telefono", "correo", "campos", "fecha", "observaciones"],
+        firma: { nombreKey: "nombre", etiqueta: "Firma del registrado" }
+      }
+    },
+    {
+      id: "formato-solicitud",
+      name: "Formato de solicitud",
+      description: "Formato de solicitud adaptable a cualquier trámite.",
+      category: "formatos",
+      price: 79,
+      docType: "formato",
+      fields: [
+        { key: "nombre", label: "Nombre del solicitante", type: "text", required: true },
+        { key: "destinatario", label: "Destinatario", type: "text", required: true },
+        { key: "motivo", label: "Motivo", type: "text", required: true },
+        { key: "campos", label: "Campos adaptables", type: "textarea", required: true },
+        { key: "fecha", label: "Fecha", type: "date", required: true },
+        { key: "ciudad", label: "Ciudad", type: "text", required: true }
+      ],
+      doc: {
+        titulo: "Formato de Solicitud",
+        camposMostrar: ["nombre", "destinatario", "motivo", "campos", "fecha", "ciudad"],
+        firma: { nombreKey: "nombre", etiqueta: "Solicitante" }
+      }
+    }
+  ];
+
+  /* ---------------- API ---------------- */
+
+  function getProduct(id) {
+    var i;
+    for (i = 0; i < PRODUCTS.length; i++) {
+      if (PRODUCTS[i].id === id) return PRODUCTS[i];
+    }
+    return null;
+  }
+
+  function normalizeData(productId, data) {
+    var out = {};
+    var k;
+    var p = getProduct(productId);
+    if (!p) return out;
+    for (k in data) {
+      if (!data.hasOwnProperty(k)) continue;
+      var v = data[k];
+      if (typeof v === "string") {
+        v = collapseSpaces(v);
+        if (NAME_KEYS.indexOf(k) >= 0 && v !== "") v = titleCase(v);
+      }
+      out[k] = v;
+    }
+    return out;
+  }
+
+  function formHTML(productId, values) {
+    var p = getProduct(productId);
+    if (!p) return "";
+    values = values || {};
+    var html = "";
+    var i, f, val;
+    for (i = 0; i < p.fields.length; i++) {
+      f = p.fields[i];
+      val = values[f.key];
+      if (val === null || val === undefined) val = "";
+      html += '<div class="df-field">';
+      html += '<label>' + esc(f.label) + (f.required ? " *" : "") + "</label>";
+      if (f.type === "textarea") {
+        html += '<textarea data-pfield="' + f.key + '" placeholder="' + esc(f.label) + '"' +
+          (f.required ? " required" : "") + ">" + esc(val) + "</textarea>";
+      } else {
+        html += '<input type="' + f.type + '" data-pfield="' + f.key + '" placeholder="' + esc(f.label) + '" value="' + esc(val) + '"' +
+          (f.required ? " required" : "") + ">";
+      }
+      html += '<div class="field-err" data-err="' + f.key + '"></div>';
+      html += "</div>";
+    }
+    return html;
+  }
+
+  function collectForm(productId, containerEl) {
+    var p = getProduct(productId);
+    var data = {};
+    if (!p || !containerEl) return data;
+    var els = containerEl.querySelectorAll("[data-pfield]");
+    var i, el, key, f, n;
+    for (i = 0; i < els.length; i++) {
+      el = els[i];
+      key = el.getAttribute("data-pfield");
+      f = fieldByKey(p, key);
+      if (!f) continue;
+      if (f.type === "number") {
+        if (trimStr(el.value) === "") {
+          data[key] = "";
+        } else {
+          n = parseFloat(el.value);
+          data[key] = isNaN(n) ? "" : n;
+        }
+      } else {
+        data[key] = el.value;
+      }
+    }
+    return data;
+  }
+
+  function validateForm(productId, data) {
+    var p = getProduct(productId);
+    var bad = [];
+    if (!p) return bad;
+    data = data || {};
+    var i, f, v, at;
+    for (i = 0; i < p.fields.length; i++) {
+      f = p.fields[i];
+      if (!f.required) continue;
+      v = data[f.key];
+      if (f.type === "number") {
+        if (v === "" || v === null || v === undefined || isNaN(Number(v)) || Number(v) <= 0) {
+          bad.push(f.key);
+        }
+      } else if (f.type === "email") {
+        v = trimStr(v);
+        at = v.indexOf("@");
+        if (v === "" || at < 1 || v.indexOf(".", at) < 0) bad.push(f.key);
+      } else {
+        if (trimStr(v) === "") bad.push(f.key);
+      }
+    }
+    return bad;
+  }
+
+  function legalHTML(p) {
+    if (!p.legal || !LEGAL[p.legal]) return "";
+    return '<p class="df-legal">' + esc(LEGAL[p.legal]) + "</p>";
+  }
+
+  function firmaHTML(p, data) {
+    var f = p.doc.firma;
+    if (!f || !f.nombreKey) return "";
+    var name = data[f.nombreKey];
+    if (name === null || name === undefined || trimStr(name) === "") name = "—";
+    var html = '<div class="df-firma"><div class="df-firma-linea"></div>';
+    html += "<p><strong>" + esc(name) + "</strong></p>";
+    if (f.cargoKey && data[f.cargoKey]) {
+      html += "<p>" + esc(data[f.cargoKey]) + "</p>";
+    }
+    if (f.etiqueta) html += "<p>" + esc(f.etiqueta) + "</p>";
+    html += "</div>";
+    return html;
+  }
+
+  function testigosHTML(data) {
+    var t1 = data.testigo1, t2 = data.testigo2;
+    if ((!t1 || trimStr(t1) === "") && (!t2 || trimStr(t2) === "")) return "";
+    var html = '<div class="df-testigos"><p><strong>Testigos:</strong></p>';
+    if (t1 && trimStr(t1) !== "") {
+      html += '<div class="df-firma"><div class="df-firma-linea"></div><p><strong>' + esc(t1) + "</strong></p><p>Testigo 1</p></div>";
+    }
+    if (t2 && trimStr(t2) !== "") {
+      html += '<div class="df-firma"><div class="df-firma-linea"></div><p><strong>' + esc(t2) + "</strong></p><p>Testigo 2</p></div>";
+    }
+    html += "</div>";
+    return html;
+  }
+
+  function previewCarta(p, data) {
+    var d = p.doc;
+    var html = '<div class="df-doc df-carta">';
+    html += '<p class="df-encabezado">' + esc(headerPlaceDate(data)) + "</p>";
+    if (d.destinatarioKey && data[d.destinatarioKey] && trimStr(data[d.destinatarioKey]) !== "") {
+      html += '<p class="df-destinatario"><strong>' + esc(data[d.destinatarioKey]) + "</strong></p>";
+    }
+    html += "<p>" + fillTpl(d.saludo, data, true) + "</p>";
+    var paras = filledParas(d.parrafos, data, true);
+    var i;
+    for (i = 0; i < paras.length; i++) {
+      html += "<p>" + paras[i] + "</p>";
+    }
+    html += '<p class="df-cierre">Atentamente,</p>';
+    html += firmaHTML(p, data);
+    html += testigosHTML(data);
+    html += legalHTML(p);
+    html += "</div>";
+    return html;
+  }
+
+  function previewContrato(p, data) {
+    var d = p.doc;
+    var html = '<div class="df-doc df-contrato">';
+    html += '<h2 class="df-titulo">' + esc(d.titulo) + "</h2>";
+    html += '<p class="df-encabezado">' + esc(headerPlaceDate(data)) + "</p>";
+    html += "<p><strong>Partes:</strong></p><ul>";
+    var i, parte, v;
+    for (i = 0; i < d.partes.length; i++) {
+      parte = d.partes[i];
+      v = data[parte.key];
+      html += "<li><strong>" + esc(parte.etiqueta) + ":</strong> " +
+        (v === null || v === undefined || trimStr(v) === "" ? "—" : esc(v)) + "</li>";
+    }
+    html += "</ul>";
+    for (i = 0; i < d.clausulas.length; i++) {
+      html += '<h3>Cláusula ' + (i + 1) + " — " + esc(d.clausulas[i].titulo) + "</h3>";
+      html += "<p>" + fillTpl(d.clausulas[i].texto, data, true) + "</p>";
+    }
+    html += '<div class="df-firmas">';
+    for (i = 0; i < d.firmas.length; i++) {
+      v = data[d.firmas[i].key];
+      html += '<div class="df-firma"><div class="df-firma-linea"></div>';
+      html += "<p><strong>" + (v === null || v === undefined || trimStr(v) === "" ? "—" : esc(v)) + "</strong></p>";
+      html += "<p>" + esc(d.firmas[i].etiqueta) + "</p></div>";
+    }
+    html += "</div>";
+    html += legalHTML(p);
+    html += "</div>";
+    return html;
+  }
+
+  function previewFormato(p, data) {
+    var d = p.doc;
+    var html = '<div class="df-doc df-formato">';
+    html += '<h2 class="df-titulo">' + esc(d.titulo) + "</h2>";
+    html += '<dl class="df-campos">';
+    var i, key, f, v;
+    for (i = 0; i < d.camposMostrar.length; i++) {
+      key = d.camposMostrar[i];
+      f = fieldByKey(p, key);
+      v = data[key];
+      html += '<div class="df-campo"><dt>' + esc(f ? f.label : key) + "</dt><dd>" +
+        esc(displayFieldVal(f || { type: "text" }, v)) + "</dd></div>";
+    }
+    html += "</dl>";
+    if (d.firma) html += firmaHTML(p, data);
+    html += legalHTML(p);
+    html += "</div>";
+    return html;
+  }
+
+  function previewHTML(productId, data) {
+    var p = getProduct(productId);
+    if (!p) return "";
+    data = data || {};
+    if (p.docType === "carta") return previewCarta(p, data);
+    if (p.docType === "contrato") return previewContrato(p, data);
+    return previewFormato(p, data);
+  }
+
+  /* ---------------- PDF (jsPDF) ---------------- */
+
+  function buildPdf(productId, data) {
+    var p = getProduct(productId);
+    if (!p) throw new Error("Producto no encontrado: " + productId);
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      throw new Error("jsPDF no está cargado (window.jspdf.jsPDF).");
+    }
+    data = data || {};
+    var doc = new window.jspdf.jsPDF({ unit: "mm", format: "letter" });
+    var M = 20, W = 170, y = 22;
+
+    function head() {
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(130, 130, 130);
+      doc.text("DOCUFÁCIL MÉXICO", 105, 12, { align: "center" });
+      doc.setTextColor(0, 0, 0);
+      doc.setFont("helvetica", "normal");
+    }
+
+    function need(h) {
+      if (y + h > 250) {
+        doc.addPage();
+        y = 20;
+        head();
+      }
+    }
+
+    function title(t) {
+      doc.setFontSize(16);
+      doc.setFont("helvetica", "bold");
+      var lines = doc.splitTextToSize(t, W);
+      need(lines.length * 8 + 6);
+      doc.text(lines, 105, y + 6, { align: "center" });
+      y += lines.length * 8 + 12;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(11);
+    }
+
+    function heading(t) {
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      var lines = doc.splitTextToSize(t, W);
+      need(lines.length * 7 + 4);
+      doc.text(lines, M, y + 5);
+      y += lines.length * 7 + 8;
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal");
+    }
+
+    function para(t) {
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal");
+      var lines = doc.splitTextToSize(t, W);
+      need(lines.length * 6 + 4);
+      doc.text(lines, M, y + 5);
+      y += lines.length * 6 + 8;
+    }
+
+    function paraRight(t) {
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal");
+      var lines = doc.splitTextToSize(t, W);
+      need(lines.length * 6 + 4);
+      doc.text(lines, 190, y + 5, { align: "right" });
+      y += lines.length * 6 + 8;
+    }
+
+    function legalPdf() {
+      if (!p.legal || !LEGAL[p.legal]) return;
+      doc.setFontSize(8);
+      doc.setTextColor(110, 110, 110);
+      var lines = doc.splitTextToSize(LEGAL[p.legal], W);
+      need(lines.length * 4 + 6);
+      doc.text(lines, M, y + 4);
+      y += lines.length * 4 + 8;
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(11);
+    }
+
+    function sigSingle(name, role) {
+      need(30);
+      doc.text("________________________", M, y);
+      doc.text(name, M, y + 7);
+      if (role) doc.text(role, M, y + 13);
+      y += 22;
+    }
+
+    function sigPair(left, right) {
+      need(30);
+      var y0 = y;
+      doc.text("________________________", M, y0);
+      doc.text("________________________", 115, y0);
+      doc.text(left.name, M, y0 + 7);
+      doc.text(right.name, 115, y0 + 7);
+      if (left.role) doc.text(left.role, M, y0 + 13);
+      if (right.role) doc.text(right.role, 115, y0 + 13);
+      y = y0 + 22;
+    }
+
+    function pdfName(key) {
+      var v = data[key];
+      if (v === null || v === undefined || trimStr(v) === "") return "—";
+      return String(v);
+    }
+
+    head();
+
+    var i, d, paras, parte, v, key, f;
+
+    if (p.docType === "carta") {
+      d = p.doc;
+      paraRight(headerPlaceDate(data));
+      if (d.destinatarioKey && data[d.destinatarioKey] && trimStr(data[d.destinatarioKey]) !== "") {
+        doc.setFont("helvetica", "bold");
+        para(String(data[d.destinatarioKey]));
+        doc.setFont("helvetica", "normal");
+      }
+      para(fillTpl(d.saludo, data, false));
+      paras = filledParas(d.parrafos, data, false);
+      for (i = 0; i < paras.length; i++) para(paras[i]);
+      para("Atentamente,");
+      var role = "";
+      if (d.firma.cargoKey && data[d.firma.cargoKey]) role = String(data[d.firma.cargoKey]);
+      else if (d.firma.etiqueta) role = d.firma.etiqueta;
+      sigSingle(pdfName(d.firma.nombreKey), role);
+      if ((data.testigo1 && trimStr(data.testigo1) !== "") ||
+          (data.testigo2 && trimStr(data.testigo2) !== "")) {
+        para("Testigos:");
+        if (data.testigo1 && trimStr(data.testigo1) !== "") {
+          sigSingle(String(data.testigo1), "Testigo 1");
+        }
+        if (data.testigo2 && trimStr(data.testigo2) !== "") {
+          sigSingle(String(data.testigo2), "Testigo 2");
+        }
+      }
+      legalPdf();
+      return doc;
+    }
+
+    if (p.docType === "contrato") {
+      d = p.doc;
+      title(d.titulo);
+      paraRight(headerPlaceDate(data));
+      heading("Partes");
+      for (i = 0; i < d.partes.length; i++) {
+        parte = d.partes[i];
+        para(parte.etiqueta + ": " + pdfName(parte.key));
+      }
+      for (i = 0; i < d.clausulas.length; i++) {
+        heading("Cláusula " + (i + 1) + " — " + d.clausulas[i].titulo);
+        para(fillTpl(d.clausulas[i].texto, data, false));
+      }
+      sigPair(
+        { name: pdfName(d.firmas[0].key), role: d.firmas[0].etiqueta },
+        { name: pdfName(d.firmas[1].key), role: d.firmas[1].etiqueta }
+      );
+      legalPdf();
+      return doc;
+    }
+
+    /* formato */
+    d = p.doc;
+    title(d.titulo);
+    for (i = 0; i < d.camposMostrar.length; i++) {
+      key = d.camposMostrar[i];
+      f = fieldByKey(p, key) || { type: "text", label: key };
+      v = data[key];
+      heading(f.label);
+      para(displayFieldVal(f, v));
+    }
+    if (d.firma) {
+      sigSingle(pdfName(d.firma.nombreKey), d.firma.etiqueta || "");
+    }
+    legalPdf();
+    return doc;
+  }
+
+  function slug(s) {
+    s = String(s);
+    s = s.replace(/\s+/g, "-");
+    s = s.replace(/[^A-Za-z0-9ÁÉÍÓÚÜÑáéíóúüñ\-]/g, "");
+    s = s.replace(/-+/g, "-");
+    s = s.replace(/^-|-$/g, "");
+    return s;
+  }
+
+  function fileName(productId, data) {
+    var p = getProduct(productId);
+    var base = p ? slug(p.name) : "Documento";
+    if (!base) base = "Documento";
+    data = data || {};
+    var nameVal = "";
+    var i, f, v;
+    if (p) {
+      for (i = 0; i < p.fields.length; i++) {
+        f = p.fields[i];
+        if (NAME_KEYS.indexOf(f.key) < 0) continue;
+        v = data[f.key];
+        if (v !== null && v !== undefined && trimStr(v) !== "") {
+          nameVal = String(v);
+          break;
+        }
+      }
+    }
+    if (nameVal) base += "-" + slug(titleCase(nameVal));
+    return base + ".pdf";
+  }
+
+  return {
+    PRODUCTS: PRODUCTS,
+    getProduct: getProduct,
+    normalizeData: normalizeData,
+    formHTML: formHTML,
+    collectForm: collectForm,
+    validateForm: validateForm,
+    previewHTML: previewHTML,
+    buildPdf: buildPdf,
+    fileName: fileName
+  };
+})();
+</script>
+
+<script>
+"use strict";
+/* ==================================================================
+   DOCUFÁCIL MÉXICO — frontend
+   Regla fundamental: el PDF final SOLO se desbloquea cuando el
+   backend (Cloudflare Worker) confirma que el pago fue APROBADO.
+   Ninguna variable local, parámetro de URL ni botón desbloquea nada.
+   ================================================================== */
+var WORKER_URL = "https://docufacil-mx.berroteranc64.workers.dev";
+var LS_DRAFT = "df_cv_draft";       // borrador del formulario (localStorage)
+var LS_ORDER = "df_last_order";     // último orderId (localStorage)
+var LS_SHARE = "df_share_token";    // token para compartir (localStorage)
+var LS_OXXO = "df_oxxo";           // datos para pagar en OXXO (CLABE, banco, folio) — SOLO para mostrar; NUNCA es el estado del pago
+var SS_ADMIN = "df_admin_token";    // token de admin (sessionStorage, NO localStorage)
+
+/* Productos por defecto (idénticos a los del Worker) si el backend no responde */
+var DEFAULT_PRODUCTS = [
+  { id: "cv", name: "Currículum profesional", price: 99, active: true, category: "profesionales",
+    description: "Currículum profesional con 5 diseños, vista previa y PDF final sin marca de agua." },
+  { id: "carta-presentacion", name: "Carta de presentación", price: 49, active: true, category: "profesionales",
+    description: "Carta de presentación formal para solicitar un empleo." },
+  { id: "carta-recomendacion", name: "Carta de recomendación", price: 49, active: true, category: "profesionales",
+    description: "Carta formal que recomienda a una persona por sus cualidades y experiencia." },
+  { id: "solicitud-empleo", name: "Solicitud de empleo", price: 49, active: true, category: "profesionales",
+    description: "Solicitud de empleo organizada con tus datos, escolaridad y experiencia." },
+  { id: "carta-renuncia", name: "Carta de renuncia", price: 49, active: true, category: "profesionales",
+    description: "Carta formal de renuncia con fecha de presentación y de salida." },
+  { id: "carta-laboral", name: "Carta laboral", price: 59, active: true, category: "profesionales",
+    description: "Carta laboral para que tu empleador la revise y la firme." },
+  { id: "carta-autorizacion", name: "Carta de autorización", price: 49, active: true, category: "personales",
+    description: "Carta de autorización con motivo, actividad y firmas." },
+  { id: "carta-poder", name: "Carta poder sencilla", price: 99, active: true, category: "personales",
+    description: "Carta poder sencilla con alcance, vigencia, firmas y testigos." },
+  { id: "carta-solicitud", name: "Carta de solicitud", price: 49, active: true, category: "personales",
+    description: "Carta de solicitud formal para trámites y gestiones." },
+  { id: "carta-presentacion-personal", name: "Carta de presentación personal", price: 49, active: true, category: "personales",
+    description: "Carta personal de presentación con tu objetivo y tus cualidades." },
+  { id: "formato-personalizado", name: "Formato personalizado", price: 99, active: true, category: "personales",
+    description: "Indica qué documento necesitas y para qué lo usarás; te lo generamos a tu medida." },
+  { id: "contrato-servicios", name: "Contrato de prestación de servicios", price: 199, active: true, category: "formatos",
+    description: "Contrato general de prestación de servicios con cláusulas y firmas." },
+  { id: "contrato-arrendamiento", name: "Contrato de arrendamiento", price: 199, active: true, category: "formatos",
+    description: "Contrato general de arrendamiento con renta, depósito y duración." },
+  { id: "contrato-compraventa", name: "Contrato de compraventa sencillo", price: 149, active: true, category: "formatos",
+    description: "Contrato general de compraventa con precio, pago y entrega." },
+  { id: "recibo-pago", name: "Recibo de pago", price: 39, active: true, category: "formatos",
+    description: "Recibo de pago con cantidad, concepto, fecha y método de pago." },
+  { id: "comprobante-entrega", name: "Comprobante de entrega", price: 39, active: true, category: "formatos",
+    description: "Comprobante de entrega con descripción, fecha y firmas." },
+  { id: "formato-registro", name: "Formato de registro", price: 49, active: true, category: "formatos",
+    description: "Formato de registro de datos con campos y observaciones." },
+  { id: "formato-solicitud", name: "Formato de solicitud personalizado", price: 79, active: true, category: "formatos",
+    description: "Formato de solicitud personalizado con motivo y campos adaptables." }
+];
+var CAT_OF = { "cv": "profesionales", "carta-presentacion": "profesionales", "carta-recomendacion": "profesionales",
+  "solicitud-empleo": "profesionales", "carta-renuncia": "profesionales", "carta-laboral": "profesionales",
+  "carta-autorizacion": "personales", "carta-poder": "personales", "carta-solicitud": "personales",
+  "carta-presentacion-personal": "personales", "formato-personalizado": "personales",
+  "contrato-servicios": "formatos", "contrato-arrendamiento": "formatos", "contrato-compraventa": "formatos",
+  "recibo-pago": "formatos", "comprobante-entrega": "formatos", "formato-registro": "formatos",
+  "formato-solicitud": "formatos" };
+
+/* Plantillas de currículum: colores para la vista previa y para el PDF */
+var TEMPLATES = {
+  ejecutivo:    { label: "Ejecutivo",    primary: [11, 36, 71],  accent: [11, 36, 71],  band: true,  side: false },
+  moderno:     { label: "Moderno",      primary: [37, 99, 235], accent: [37, 99, 235], band: false, side: true },
+  minimalista: { label: "Minimalista",  primary: [30, 30, 30],  accent: [120, 120, 120], band: false, side: false },
+  profesional: { label: "Profesional",  primary: [11, 36, 71],  accent: [37, 99, 235], band: false, side: false },
+  creativo:    { label: "Creativo",     primary: [11, 36, 71],  accent: [255, 193, 7],  band: false, side: false }
+};
+
+var state = {
+  products: DEFAULT_PRODUCTS.slice(),
+  template: "moderno",
+  data: null,          // datos del formulario (para el PDF)
+  orderId: null,
+  shareToken: null,
+  orderStatus: null,
+  orderProduct: "cv",  // producto del pedido actual (para regenerar el PDF correcto)
+  oxxo: null,          // datos para pagar en OXXO (del Worker; solo para mostrar)
+  oxxoAmount: null,
+  adminToken: null,
+  currentProduct: "cv",  // producto que se está creando ("cv" o id de DFProducts)
+  currentData: null,      // datos del formulario del producto actual
+  catalogQuery: "",
+  catalogFilter: "todos"
+};
+
+/* ---------- utilidades ---------- */
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function money(n){ return "$" + Number(n || 0).toFixed(2) + " MXN"; }
+function toastMsg(el, kind, msg){ if(!el) return; el.className = kind === "ok" ? "ok" : (kind === "err" ? "err" : "warn"); el.textContent = msg; }
+function loadJSON(key, fb){ try{ var v = localStorage.getItem(key); return v ? JSON.parse(v) : fb; }catch(e){ return fb; } }
+function saveJSON(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+/* Eventos de marketing (solo si existe el Pixel de Meta configurado) */
+function trackEvent(name, data){ try{ if(window.fbq) window.fbq("track", name, data || {}); }catch(e){} }
+
+/* ---------- configuración / catálogo (GET /api/config) ---------- */
+function cvProduct(){
+  for(var i = 0; i < state.products.length; i++) if(state.products[i].id === "cv") return state.products[i];
+  return { id: "cv", name: "Currículum profesional", price: 99, active: true };
+}
+function cvPrice(){ return Number(cvProduct().price) || 99; }
+async function loadConfig(){
+  try{
+    var res = await fetch(WORKER_URL + "/api/config", { method: "GET" });
+    if(!res.ok) throw new Error("config " + res.status);
+    var body = await res.json();
+    if(body && Array.isArray(body.products) && body.products.length) state.products = body.products;
+  }catch(e){
+    /* Sin backend: se usan los precios por defecto ($99 MXN para el CV) */
+    state.products = DEFAULT_PRODUCTS.slice();
+  }
+  renderPrices();
+  renderCatalog();
+}
+function renderPrices(){
+  var p = cvPrice();
+  if($("featuredPrice")) $("featuredPrice").textContent = money(p);
+  if($("cvPriceLabel")) $("cvPriceLabel").textContent = money(p);
+  if($("btnPagar")) $("btnPagar").textContent = "Pagar " + money(p) + " en OXXO";
+}
+function productCard(prod){
+  var active = prod.active;
+  var badge = active ? '<span class="badge badge-green">DISPONIBLE</span>' : '<span class="badge badge-gray">INACTIVO</span>';
+  var price = '<div class="price">' + money(prod.price) + '</div>';
+  var btn = "";
+  if(active){
+    if(prod.id === "cv"){
+      btn = '<a class="btn btn-yellow btn-block btn-sm" href="#generador">Crear</a>';
+    } else {
+      btn = '<button class="btn btn-yellow btn-block btn-sm" type="button" onclick="selectProduct(\'' + prod.id + '\')">Crear</button>';
+    }
+  } else {
+    btn = '<button class="btn btn-outline btn-block btn-sm" type="button" disabled>No disponible</button>';
+  }
+  return '<article class="prod">' + badge + '<h4 style="margin-top:8px">' + esc(prod.name) + '</h4><p>' + esc(prod.description || "") + '</p>' + price + '<p class="muted" style="font-size:12px;margin:4px 0 0">Digital &middot; Pago &uacute;nico</p><div style="height:10px"></div>' + btn + '</article>';
+}
+function productPrice(id){
+  for(var i = 0; i < state.products.length; i++) if(state.products[i].id === id) return Number(state.products[i].price) || 0;
+  var cfg = (typeof DFProducts !== "undefined") ? DFProducts.getProduct(id) : null;
+  return cfg ? Number(cfg.price) || 0 : 0;
+}
+function productName(id){
+  for(var i = 0; i < state.products.length; i++) if(state.products[i].id === id) return state.products[i].name;
+  var cfg = (typeof DFProducts !== "undefined") ? DFProducts.getProduct(id) : null;
+  return cfg ? cfg.name : (id === "cv" ? "Currículum profesional" : id);
+}
+function renderCatalog(){
+  var q = (state.catalogQuery || "").toLowerCase();
+  var f = state.catalogFilter || "todos";
+  var byCat = { profesionales: [], personales: [], formatos: [] };
+  state.products.forEach(function(p){
+    var cat = p.category || CAT_OF[p.id] || "profesionales";
+    if(f !== "todos" && cat !== f) return;
+    if(q && (p.name || "").toLowerCase().indexOf(q) === -1 && (p.description || "").toLowerCase().indexOf(q) === -1) return;
+    byCat[cat].push(productCard(p));
+  });
+  if($("catProfesionales")) $("catProfesionales").innerHTML = byCat.profesionales.join("") || '<p class="muted">Sin productos en esta categoría.</p>';
+  if($("catPersonales")) $("catPersonales").innerHTML = byCat.personales.join("");
+  if($("catFormatos")) $("catFormatos").innerHTML = byCat.formatos.join("");
+  var showAll = f === "todos";
+  if($("catHeadProfesionales")) $("catHeadProfesionales").style.display = (showAll || f === "profesionales") ? "" : "none";
+  if($("catHeadPersonales")) $("catHeadPersonales").style.display = (showAll || f === "personales") ? "" : "none";
+  if($("catHeadFormatos")) $("catHeadFormatos").style.display = (showAll || f === "formatos") ? "" : "none";
+  if($("catProfesionales")) $("catProfesionales").style.display = (showAll || f === "profesionales") ? "" : "none";
+  if($("catPersonales")) $("catPersonales").style.display = (showAll || f === "personales") ? "" : "none";
+  if($("catFormatos")) $("catFormatos").style.display = (showAll || f === "formatos") ? "" : "none";
+}
+/* ---------- generador de producto (17 productos, motor DFProducts) ---------- */
+var LS_PROD_DRAFT = "df_prod_draft";   // borrador del producto actual {product, data}
+function currentProductCfg(){
+  if(state.currentProduct === "cv") return null;
+  return (typeof DFProducts !== "undefined") ? DFProducts.getProduct(state.currentProduct) : null;
+}
+function selectProduct(id){
+  var cfg = (typeof DFProducts !== "undefined") ? DFProducts.getProduct(id) : null;
+  if(!cfg) return;
+  state.currentProduct = id;
+  state.orderProduct = id;
+  var saved = loadJSON(LS_PROD_DRAFT, null);
+  var values = (saved && saved.product === id && saved.data) ? saved.data : {};
+  renderProdForm(id, values);
+  $("generador-producto").classList.remove("hidden");
+  $("generador").classList.add("hidden");
+  document.getElementById("generador-producto").scrollIntoView({ behavior: "smooth" });
+}
+function selectCV(){
+  state.currentProduct = "cv";
+  state.orderProduct = "cv";
+  $("generador-producto").classList.add("hidden");
+  $("generador").classList.remove("hidden");
+  document.getElementById("generador").scrollIntoView({ behavior: "smooth" });
+}
+function renderProdForm(id, values){
+  var cfg = (typeof DFProducts !== "undefined") ? DFProducts.getProduct(id) : null;
+  if(!cfg) return;
+  $("prodGenTitle").textContent = "Crea tu " + cfg.name.toLowerCase();
+  $("prodGenDesc").textContent = cfg.description || "";
+  $("prodGenPrice").textContent = money(productPrice(id));
+  var legal = "";
+  if(cfg.legal === "poder") legal = "Aviso: una carta poder sencilla no sustituye los poderes notariales ni garantiza su aceptación por todas las instituciones.";
+  else if(cfg.legal === "contrato") legal = "Aviso: este documento es una plantilla general, no asesoría jurídica personalizada. Las partes deben revisar el contenido y buscar asesoría legal cuando sea necesario.";
+  $("prodLegal").textContent = legal;
+  var box = $("prodForm");
+  box.innerHTML = DFProducts.formHTML(id, values || {});
+  box.querySelectorAll("input,textarea,select").forEach(function(inp){
+    inp.addEventListener("input", function(){ saveProdDraft(); renderProdPreview(); });
+  });
+  $("prodFormMsg").textContent = "";
+  renderProdPreview();
+  updateProdPayButton();
+}
+function updateProdPayButton(){
+  var b = $("btnPagarProd");
+  if(!b) return;
+  var p = productPrice(state.currentProduct);
+  b.textContent = "Pagar " + money(p) + " en OXXO y desbloquear PDF";
+}
+function saveProdDraft(){
+  var cfg = currentProductCfg();
+  if(!cfg) return;
+  var box = $("prodForm");
+  var d = DFProducts.collectForm(state.currentProduct, box);
+  state.currentData = d;
+  saveJSON(LS_PROD_DRAFT, { product: state.currentProduct, data: d });
+}
+function renderProdPreview(){
+  var cfg = currentProductCfg();
+  var el = $("prodPreview");
+  if(!cfg || !el) return;
+  var box = $("prodForm");
+  var d = DFProducts.collectForm(state.currentProduct, box);
+  d = DFProducts.normalizeData(state.currentProduct, d);
+  state.currentData = d;
+  el.innerHTML = DFProducts.previewHTML(state.currentProduct, d);
+}
+function fillProdForm(id, data){
+  var cfg = (typeof DFProducts !== "undefined") ? DFProducts.getProduct(id) : null;
+  if(!cfg) return;
+  state.currentProduct = id;
+  state.orderProduct = id;
+  renderProdForm(id, data || {});
+  $("generador-producto").classList.remove("hidden");
+}
+
+function initCatalogFilters(){
+  var s = $("catalogSearch");
+  if(s) s.addEventListener("input", function(){ state.catalogQuery = s.value.trim(); renderCatalog(); });
+  document.querySelectorAll(".cat-filter").forEach(function(b){
+    b.addEventListener("click", function(){
+      state.catalogFilter = b.getAttribute("data-filter") || "todos";
+      document.querySelectorAll(".cat-filter").forEach(function(x){
+        x.classList.toggle("on", x === b);
+        x.classList.toggle("btn-navy", x === b);
+        x.classList.toggle("btn-outline", x !== b);
+      });
+      renderCatalog();
+    });
+  });
+}
+
+/* ---------- formulario del currículum ---------- */
+function emptyData(){
+  return { nombre: "", telefono: "", correo: "", ciudad: "", estado: "", perfil: "",
+    experiencia: [{ puesto: "", empresa: "", periodo: "", descripcion: "" }],
+    estudios: [{ titulo: "", institucion: "", periodo: "" }],
+    habilidades: "", idiomas: [{ idioma: "", nivel: "" }],
+    cursos: [{ curso: "", institucion: "" }], foto: null };
+}
+function collectData(){
+  var d = emptyData();
+  d.nombre = $("cvNombre").value.trim();
+  d.telefono = $("cvTelefono").value.trim();
+  d.correo = $("cvEmail").value.trim();
+  d.ciudad = $("cvCiudad").value.trim();
+  d.estado = $("cvEstado").value.trim();
+  d.perfil = $("cvPerfil").value.trim();
+  d.habilidades = $("cvHabilidades").value.trim();
+  d.experiencia = readRepeater("expList", ["puesto", "empresa", "periodo", "descripcion"]);
+  d.estudios = readRepeater("eduList", ["titulo", "institucion", "periodo"]);
+  d.idiomas = readRepeater("langList", ["idioma", "nivel"]);
+  d.cursos = readRepeater("courseList", ["curso", "institucion"]);
+  d.foto = state.data && state.data.foto ? state.data.foto : null;
+  return d;
+}
+function readRepeater(listId, fields){
+  var out = [];
+  var box = $(listId); if(!box) return out;
+  var items = box.querySelectorAll(".rep-item");
+  items.forEach(function(it){
+    var o = {}, any = false;
+    fields.forEach(function(f){
+      var inp = it.querySelector('[data-field="' + f + '"]');
+      o[f] = inp ? inp.value.trim() : "";
+      if(o[f]) any = true;
+    });
+    if(any) out.push(o);
+  });
+  return out;
+}
+function repRow(fields, values, ph){
+  var div = document.createElement("div");
+  div.className = "rep-item";
+  var html = "";
+  fields.forEach(function(f){
+    html += '<label class="f" style="margin-top:6px">' + esc(ph[f].label) + '</label>';
+    if(ph[f].textarea){
+      html += '<textarea data-field="' + f + '" placeholder="' + esc(ph[f].ph) + '">' + esc(values[f] || "") + '</textarea>';
+    } else {
+      html += '<input type="text" data-field="' + f + '" placeholder="' + esc(ph[f].ph) + '" value="' + esc(values[f] || "") + '">';
+    }
+  });
+  html += '<button type="button" class="btn-del">Quitar</button>';
+  div.innerHTML = html;
+  div.querySelector(".btn-del").addEventListener("click", function(){ div.remove(); saveDraft(); renderPreview(); });
+  div.querySelectorAll("input,textarea").forEach(function(inp){
+    inp.addEventListener("input", function(){ saveDraft(); renderPreview(); });
+  });
+  return div;
+}
+var PH_EXP = { puesto: { label: "Puesto", ph: "Ej. Cajera" }, empresa: { label: "Empresa", ph: "Ej. Tienda La Palma" },
+  periodo: { label: "Periodo", ph: "Ej. 2021 - 2024" }, descripcion: { label: "Descripción", ph: "Qué hacías en ese trabajo", textarea: true } };
+var PH_EDU = { titulo: { label: "Título o grado", ph: "Ej. Licenciatura en Contaduría" }, institucion: { label: "Institución", ph: "Ej. Universidad de Guadalajara" },
+  periodo: { label: "Periodo", ph: "Ej. 2018 - 2022" } };
+var PH_LANG = { idioma: { label: "Idioma", ph: "Ej. Inglés" }, nivel: { label: "Nivel", ph: "Ej. Intermedio" } };
+var PH_COURSE = { curso: { label: "Curso o certificación", ph: "Ej. Curso de Excel avanzado" }, institucion: { label: "Institución", ph: "Ej. Coursera" } };
+function addRep(listId, fields, ph, values){
+  $(listId).appendChild(repRow(fields, values || {}, ph));
+}
+function initRepeaters(){
+  addRep("expList", ["puesto", "empresa", "periodo", "descripcion"], PH_EXP, {});
+  addRep("eduList", ["titulo", "institucion", "periodo"], PH_EDU, {});
+  addRep("langList", ["idioma", "nivel"], PH_LANG, {});
+  addRep("courseList", ["curso", "institucion"], PH_COURSE, {});
+  $("btnAddExp").addEventListener("click", function(){ addRep("expList", ["puesto", "empresa", "periodo", "descripcion"], PH_EXP, {}); });
+  $("btnAddEdu").addEventListener("click", function(){ addRep("eduList", ["titulo", "institucion", "periodo"], PH_EDU, {}); });
+  $("btnAddLang").addEventListener("click", function(){ addRep("langList", ["idioma", "nivel"], PH_LANG, {}); });
+  $("btnAddCourse").addEventListener("click", function(){ addRep("courseList", ["curso", "institucion"], PH_COURSE, {}); });
+}
+function fillRepeater(listId, fields, ph, rows){
+  var box = $(listId); box.innerHTML = "";
+  if(!rows || !rows.length) rows = [{}];
+  rows.forEach(function(r){ addRep(listId, fields, ph, r); });
+}
+/* Fotografía opcional: se reduce a 240 px para que quepa en localStorage */
+function initPhoto(){
+  $("cvFoto").addEventListener("change", function(){
+    var file = this.files && this.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      var img = new Image();
+      img.onload = function(){
+        var max = 240, w = img.width, h = img.height;
+        if(w > max){ h = Math.round(h * max / w); w = max; }
+        var cv = document.createElement("canvas");
+        cv.width = w; cv.height = h;
+        cv.getContext("2d").drawImage(img, 0, 0, w, h);
+        var dataUrl = cv.toDataURL("image/jpeg", 0.85);
+        if(!state.data) state.data = emptyData();
+        state.data.foto = dataUrl;
+        $("fotoPreview").src = dataUrl;
+        $("fotoWrap").classList.remove("hidden");
+        saveDraft(); renderPreview();
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  $("btnQuitarFoto").addEventListener("click", function(){
+    if(state.data) state.data.foto = null;
+    $("cvFoto").value = "";
+    $("fotoWrap").classList.add("hidden");
+    saveDraft(); renderPreview();
+  });
+}
+/* Borrador: se guarda en localStorage para no perderlo al recargar la página */
+function saveDraft(){
+  var d = collectData();
+  state.data = d;
+  saveJSON(LS_DRAFT, d);
+}
+/* Aplica unos datos al formulario (y a la vista previa). Se usa al
+   restaurar el borrador y al recibir los datos de un pedido pagado. */
+function applyDataToForm(d){
+  state.data = d;
+  $("cvNombre").value = d.nombre || "";
+  $("cvTelefono").value = d.telefono || "";
+  $("cvEmail").value = d.correo || "";
+  $("cvCiudad").value = d.ciudad || "";
+  $("cvEstado").value = d.estado || "";
+  $("cvPerfil").value = d.perfil || "";
+  $("cvHabilidades").value = d.habilidades || "";
+  fillRepeater("expList", ["puesto", "empresa", "periodo", "descripcion"], PH_EXP, d.experiencia);
+  fillRepeater("eduList", ["titulo", "institucion", "periodo"], PH_EDU, d.estudios);
+  fillRepeater("langList", ["idioma", "nivel"], PH_LANG, d.idiomas);
+  fillRepeater("courseList", ["curso", "institucion"], PH_COURSE, d.cursos);
+  if(d.foto){
+    $("fotoPreview").src = d.foto;
+    $("fotoWrap").classList.remove("hidden");
+  } else {
+    $("fotoWrap").classList.add("hidden");
+  }
+}
+function restoreDraft(){
+  var d = loadJSON(LS_DRAFT, null);
+  if(!d) { state.data = emptyData(); return; }
+  applyDataToForm(d);
+}
+function validateForm(){
+  var ok = true;
+  function setErr(id, msg){ $(id).textContent = msg || ""; if(msg) ok = false; }
+  var d = collectData();
+  setErr("errNombre", d.nombre ? "" : "Escribe tu nombre completo.");
+  setErr("errTelefono", d.telefono ? "" : "Escribe tu teléfono.");
+  setErr("errEmail", !d.correo ? "Escribe tu correo electrónico." : (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.correo) ? "" : "Escribe un correo válido."));
+  setErr("errCiudad", d.ciudad ? "" : "Escribe tu ciudad.");
+  setErr("errEstado", d.estado ? "" : "Escribe tu estado.");
+  setErr("errPerfil", d.perfil ? "" : "Escribe tu perfil profesional.");
+  return ok;
+}
+
+/* ---------- vista previa en vivo (con marca de agua) ---------- */
+function cvPreviewHTML(d){
+  var tpl = TEMPLATES[state.template] || TEMPLATES.moderno;
+  var h = '<div class="cv-head">';
+  if(d.foto) h += '<img class="cv-foto" src="' + esc(d.foto) + '" alt="Fotografía">';
+  h += '<h2>' + esc(d.nombre || "Tu nombre") + '</h2>';
+  h += '<div class="cv-contact">' + esc([d.telefono, d.correo, d.ciudad, d.estado].filter(Boolean).join(" · ")) + '</div></div>';
+  h += '<div class="cv-side">';
+  if(d.perfil) h += '<h3>Perfil profesional</h3><p>' + esc(d.perfil) + '</p>';
+  if(d.experiencia && d.experiencia.length){
+    h += '<h3>Experiencia laboral</h3>';
+    d.experiencia.forEach(function(e){
+      h += '<div class="cv-item"><b>' + esc(e.puesto) + '</b> — ' + esc(e.empresa) + ' <span class="muted">(' + esc(e.periodo) + ')</span>';
+      if(e.descripcion) h += '<p>' + esc(e.descripcion) + '</p>';
+      h += '</div>';
+    });
+  }
+  if(d.estudios && d.estudios.length){
+    h += '<h3>Estudios</h3>';
+    d.estudios.forEach(function(e){
+      h += '<div class="cv-item"><b>' + esc(e.titulo) + '</b> — ' + esc(e.institucion) + ' <span class="muted">(' + esc(e.periodo) + ')</span></div>';
+    });
+  }
+  var habs = (d.habilidades || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean);
+  if(habs.length) h += '<h3>Habilidades</h3><ul>' + habs.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + '</ul>';
+  if(d.idiomas && d.idiomas.length){
+    h += '<h3>Idiomas</h3><ul>' + d.idiomas.map(function(x){ return "<li>" + esc(x.idioma) + (x.nivel ? " — " + esc(x.nivel) : "") + "</li>"; }).join("") + '</ul>';
+  }
+  if(d.cursos && d.cursos.length){
+    h += '<h3>Cursos y certificaciones</h3><ul>' + d.cursos.map(function(x){ return "<li>" + esc(x.curso) + (x.institucion ? " — " + esc(x.institucion) : "") + "</li>"; }).join("") + '</ul>';
+  }
+  h += '</div>';
+  return h;
+}
+function renderPreview(){
+  var d = collectData();
+  state.data = d;
+  var pv = $("cvPreview");
+  pv.className = "cv-preview tpl-" + state.template;
+  pv.innerHTML = cvPreviewHTML(d);
+}
+function initTemplates(){
+  document.querySelectorAll("#tplGrid .tpl-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll("#tplGrid .tpl-btn").forEach(function(b){ b.classList.remove("on"); });
+      btn.classList.add("on");
+      state.template = btn.getAttribute("data-template");
+      renderPreview();
+    });
+  });
+}
+</script>
+
+<script>
+"use strict";
+/* ==================================================================
+   DOCUFÁCIL MÉXICO — parte 2: PDF, pagos, pedidos y admin
+   ================================================================== */
+
+/* ---------- generación del PDF con jsPDF (de verdad) ---------- */
+function normalizeData(d){
+  var out = emptyData();
+  if(!d || typeof d !== "object") return out;
+  ["nombre","telefono","correo","ciudad","estado","perfil","habilidades"].forEach(function(k){ if(typeof d[k] === "string") out[k] = d[k]; });
+  if(Array.isArray(d.experiencia)) out.experiencia = d.experiencia;
+  if(Array.isArray(d.estudios)) out.estudios = d.estudios;
+  if(Array.isArray(d.idiomas)) out.idiomas = d.idiomas;
+  if(Array.isArray(d.cursos)) out.cursos = d.cursos;
+  if(typeof d.foto === "string") out.foto = d.foto;
+  return out;
+}
+function buildCVPdf(d){
+  if(!window.jspdf || !window.jspdf.jsPDF) throw new Error("No se pudo cargar el generador de PDF (jsPDF). Revisa tu conexión e inténtalo de nuevo.");
+  var tpl = TEMPLATES[state.template] || TEMPLATES.moderno;
+  var doc = new window.jspdf.jsPDF({ unit: "mm", format: "letter" });
+  var W = 216, H = 279, M = 15, CW = W - M * 2, y = M;
+  function rgb(c){ return c; }
+  function ensureSpace(h){ if(y + h > H - 15){ doc.addPage(); y = M; } }
+  function section(title){
+    ensureSpace(16);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(12);
+    doc.setTextColor.apply(doc, tpl.accent);
+    doc.text(title.toUpperCase(), M, y);
+    doc.setDrawColor.apply(doc, tpl.accent);
+    doc.setLineWidth(0.6);
+    doc.line(M, y + 2, M + CW, y + 2);
+    y += 9;
+    doc.setTextColor(20, 33, 58);
+  }
+  function para(text, size, gap){
+    doc.setFont("helvetica", "normal"); doc.setFontSize(size || 10.5);
+    var lines = doc.splitTextToSize(String(text || ""), CW);
+    lines.forEach(function(ln){ ensureSpace(6); doc.text(ln, M, y); y += (gap || 5.5); });
+  }
+  function bullet(text){
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10.5);
+    var lines = doc.splitTextToSize(String(text || ""), CW - 5);
+    lines.forEach(function(ln, i){ ensureSpace(6); doc.text(i === 0 ? "•  " + ln : "    " + ln, M, y); y += 5.5; });
+  }
+  /* Encabezado según la plantilla */
+  var foto = d.foto || null;
+  if(tpl.band){
+    doc.setFillColor.apply(doc, tpl.primary);
+    doc.rect(0, 0, W, 38, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(19);
+    doc.text(d.nombre || "Currículum", M, 14);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10);
+    doc.text([d.telefono, d.correo, d.ciudad, d.estado].filter(Boolean).join("  ·  "), M, 21);
+    doc.setFontSize(9); doc.setTextColor(191, 208, 232);
+    doc.text("Currículum profesional — DocuFácil México", M, 29);
+    if(foto){ try{ doc.addImage(foto, "JPEG", W - M - 26, 5, 26, 30); }catch(e){} }
+    y = 46;
+    doc.setTextColor(20, 33, 58);
+  } else {
+    doc.setTextColor.apply(doc, tpl.primary);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(19);
+    doc.text(d.nombre || "Currículum", M, y + 6);
+    y += 13;
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10);
+    doc.setTextColor(91, 107, 130);
+    doc.text([d.telefono, d.correo, d.ciudad, d.estado].filter(Boolean).join("  ·  "), M, y);
+    y += 5;
+    doc.setDrawColor.apply(doc, tpl.accent);
+    doc.setLineWidth(0.8);
+    doc.line(M, y, M + CW, y);
+    y += 8;
+    if(foto){ try{ doc.addImage(foto, "JPEG", W - M - 26, M, 26, 30); }catch(e){} }
+    doc.setTextColor(20, 33, 58);
+  }
+  if(d.perfil){ section("Perfil profesional"); para(d.perfil, 10.5); y += 2; }
+  if(d.experiencia && d.experiencia.length){
+    section("Experiencia laboral");
+    d.experiencia.forEach(function(e){
+      ensureSpace(16);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(11);
+      doc.text((e.puesto || "") + (e.empresa ? " — " + e.empresa : ""), M, y); y += 5.5;
+      doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(91, 107, 130);
+      if(e.periodo){ doc.text(e.periodo, M, y); y += 5; }
+      doc.setTextColor(20, 33, 58);
+      if(e.descripcion) para(e.descripcion, 10.5);
+      y += 2;
+    });
+  }
+  if(d.estudios && d.estudios.length){
+    section("Estudios");
+    d.estudios.forEach(function(e){
+      ensureSpace(11);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(11);
+      doc.text((e.titulo || "") + (e.institucion ? " — " + e.institucion : ""), M, y); y += 5.5;
+      if(e.periodo){ doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(91, 107, 130); doc.text(e.periodo, M, y); y += 5; doc.setTextColor(20, 33, 58); }
+      y += 1;
+    });
+  }
+  var habs = (d.habilidades || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean);
+  if(habs.length){ section("Habilidades"); habs.forEach(function(h){ bullet(h); }); y += 2; }
+  if(d.idiomas && d.idiomas.length){
+    section("Idiomas");
+    d.idiomas.forEach(function(x){ bullet(x.idioma + (x.nivel ? " — " + x.nivel : "")); });
+    y += 2;
+  }
+  if(d.cursos && d.cursos.length){
+    section("Cursos y certificaciones");
+    d.cursos.forEach(function(x){ bullet(x.curso + (x.institucion ? " — " + x.institucion : "")); });
+    y += 2;
+  }
+  ensureSpace(12);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(8.5); doc.setTextColor(150, 150, 150);
+  doc.text("Documento generado con DocuFácil México", M, H - 10);
+  return doc;
+}
+function pdfFileName(d){
+  var base = String(d.nombre || "mi-curriculum").trim().replace(/\s+/g, "-").replace(/[^A-Za-z0-9\-_áéíóúÁÉÍÓÚñÑ]/g, "");
+  return "CV-" + (base || "documento") + ".pdf";
+}
+function downloadPdf(){
+  try{
+    var pid = state.orderProduct || state.currentProduct || "cv";
+    if(pid !== "cv" && typeof DFProducts !== "undefined" && DFProducts.getProduct(pid)){
+      var pd = state.currentData;
+      if(!pd){
+        var saved = loadJSON(LS_PROD_DRAFT, null);
+        if(saved && saved.product === pid && saved.data) pd = saved.data;
+      }
+      if(!pd || !Object.keys(pd).some(function(k){ var v = pd[k]; return v !== "" && v !== null && v !== undefined; })){
+        toastMsg($("payMsg"), "err", "No encontramos los datos de tu documento en este navegador. Ábrelo con tu enlace seguro (con token) o vuelve a llenar el formulario.");
+        return;
+      }
+      pd = DFProducts.normalizeData(pid, pd);
+      var pdoc = DFProducts.buildPdf(pid, pd);
+      pdoc.save(DFProducts.fileName(pid, pd));
+      trackEvent("Purchase", { value: productPrice(pid), currency: "MXN" });
+      toastMsg($("payMsg"), "ok", "Tu PDF se descargó. Guárdalo bien; también puedes volver a descargarlo desde Mi pedido.");
+      return;
+    }
+    var d = state.data && state.data.nombre ? state.data : loadJSON(LS_DRAFT, null);
+    if(!d || !d.nombre){
+      toastMsg($("payMsg"), "err", "No encontramos los datos de tu currículum en este navegador. Ábrelo con tu enlace seguro (con token) o vuelve a llenar el formulario.");
+      return;
+    }
+    d = normalizeData(d);
+    var doc = buildCVPdf(d);
+    doc.save(pdfFileName(d));
+    trackEvent("Purchase", { value: cvPrice(), currency: "MXN" });
+    toastMsg($("payMsg"), "ok", "Tu PDF se descargó. Guárdalo bien; también puedes volver a descargarlo desde Mi pedido.");
+  }catch(e){
+    toastMsg($("payMsg"), "err", e && e.message ? e.message : "No se pudo generar el PDF. Inténtalo de nuevo.");
+  }
+}
+
+/* ---------- pago en OXXO (POST /api/create-order) ----------
+   El Worker devuelve {orderId, amount, status:"pendiente", shareToken,
+   oxxo:{clabe, beneficiario, banco, referencia}}. NO hay checkout ni
+   redirección: el cliente deposita en efectivo en OXXO y luego verifica
+   su pago con la clave de rastreo de su ticket. */
+async function createOrder(){
+  var isCV = state.currentProduct === "cv";
+  var d, msgEl, btn;
+  if(isCV){
+    if(!validateForm()){
+      toastMsg($("payMsg"), "err", "Revisa los campos marcados en rojo antes de pagar.");
+      document.getElementById("generador").scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    d = collectData();
+    state.data = d;
+    saveDraft();
+    btn = $("btnPagar");
+    msgEl = $("payMsg");
+  } else {
+    var cfg = DFProducts.getProduct(state.currentProduct);
+    if(!cfg){ toastMsg($("prodFormMsg"), "err", "Elige un documento primero."); return; }
+    var formEl = $("prodForm");
+    d = DFProducts.collectForm(state.currentProduct, formEl);
+    d = DFProducts.normalizeData(state.currentProduct, d);
+    var missing = DFProducts.validateForm(state.currentProduct, d);
+    formEl.querySelectorAll("[data-err]").forEach(function(e){ e.textContent = ""; });
+    if(missing.length){
+      missing.forEach(function(k){
+        var e = formEl.querySelector('[data-err="' + k + '"]');
+        if(e) e.textContent = "Este campo es obligatorio.";
+      });
+      toastMsg($("prodFormMsg"), "err", "Revisa los campos marcados antes de pagar.");
+      document.getElementById("generador-producto").scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    state.currentData = d;
+    saveJSON(LS_PROD_DRAFT, { product: state.currentProduct, data: d });
+    btn = $("btnPagarProd");
+    msgEl = $("prodPayMsg");
+  }
+  btn.disabled = true;
+  btn.textContent = "Creando tu pedido…";
+  toastMsg(msgEl, "warn", "Creando tu pedido con los datos para pagar en OXXO…");
+  try{
+    var orderEmail = d.correo || "";
+    var orderName = d.nombre || d.otorgante || d.vendedor || d.prestador || d.arrendador || d.paga || d.entrega || d.recomienda || "";
+    var res = await fetch(WORKER_URL + "/api/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product: state.currentProduct, template: isCV ? state.template : null, data: d, email: orderEmail, name: orderName })
+    });
+    var body = await res.json().catch(function(){ return {}; });
+    if(!res.ok || !body.orderId){
+      var msg = (body && body.message) ? body.message
+        : (body && body.error === "payments_not_configured" ? "El pago en OXXO aún no está configurado. Inténtalo más tarde."
+        : (body && body.error === "product_unavailable" ? "Este producto no está disponible por ahora."
+        : "No se pudo crear el pedido. Inténtalo de nuevo."));
+      toastMsg(msgEl, "err", msg + " Tu información no se perdió.");
+      btn.disabled = false;
+      if(isCV) renderPrices(); else updateProdPayButton();
+      return;
+    }
+    saveJSON(LS_ORDER, body.orderId);
+    if(body.shareToken) saveJSON(LS_SHARE, body.shareToken);
+    state.orderId = body.orderId;
+    state.orderProduct = state.currentProduct;
+    state.shareToken = body.shareToken || null;
+    state.oxxo = body.oxxo || null;
+    state.oxxoAmount = body.amount;
+    if(body.oxxo) saveJSON(LS_OXXO, { orderId: body.orderId, amount: body.amount, oxxo: body.oxxo });
+    trackEvent("InitiateCheckout", { value: body.amount, currency: "MXN" });
+    if(!body.oxxo){
+      toastMsg(msgEl, "err", "El pago en OXXO aún no está configurado. Tu pedido se creó (" + body.orderId + ") pero no se puede pagar todavía. Inténtalo más tarde.");
+      btn.disabled = false;
+      if(isCV) renderPrices(); else updateProdPayButton();
+      return;
+    }
+    showOxxoBox(body);
+    showOrderStatus("warn", "Pedido creado. Folio: <b>" + esc(body.orderId) + "</b>. Deposita en OXXO y luego verifica tu pago aquí abajo con la clave de rastreo de tu ticket.");
+  }catch(e){
+    toastMsg(msgEl, "err", "No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo. Tu información no se perdió.");
+    btn.disabled = false;
+    if(isCV) renderPrices(); else updateProdPayButton();
+  }
+}
+/* Muestra los datos para pagar en OXXO (vienen del Worker, nunca fijos
+   en el código) y el formulario de verificación por clave de rastreo. */
+function showOxxoBox(order){
+  var oxxo = (order && order.oxxo) || state.oxxo;
+  if(!oxxo) return;
+  state.orderId = (order && order.orderId) || state.orderId;
+  state.oxxo = oxxo;
+  var amount = Number((order && order.amount) || state.oxxoAmount) || cvPrice();
+  state.oxxoAmount = amount;
+  $("oxxoMonto").textContent = money(amount);
+  $("oxxoClabe").textContent = oxxo.clabe || "—";
+  $("oxxoBanco").textContent = oxxo.banco || "—";
+  $("oxxoBeneficiario").textContent = oxxo.beneficiario || "—";
+  $("oxxoRef").textContent = oxxo.referencia || state.orderId || "—";
+  $("vfMonto").value = amount;
+  $("oxxoBox").classList.remove("hidden");
+  $("btnPagar").classList.add("hidden");
+  if($("btnPagarProd")) $("btnPagarProd").classList.add("hidden");
+  $("payMsg").textContent = "";
+  $("vfMsg").textContent = "";
+  $("oxxoBox").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+/* ---------- verificación del depósito (POST /api/verify-payment) ----------
+   El Worker verifica el depósito real (monto, CLABE y clave exactos,
+   clave no reusada). SOLO si responde status "aprobado" se desbloquea
+   el PDF; cualquier otro caso lo deja bloqueado. */
+async function verifyPayment(){
+  var clave = $("vfClave").value.trim();
+  var fecha = $("vfFecha").value;
+  var banco = $("vfBanco").value;
+  var monto = Number($("vfMonto").value);
+  var msg = $("vfMsg");
+  if(!state.orderId){
+    toastMsg(msg, "err", "Primero crea tu pedido con el botón de arriba.");
+    return;
+  }
+  if(!clave){ toastMsg(msg, "err", "Escribe la clave de rastreo de tu ticket de OXXO."); return; }
+  if(!fecha){ toastMsg(msg, "err", "Escribe la fecha del depósito."); return; }
+  if(!monto || monto <= 0){ toastMsg(msg, "err", "Escribe el monto que depositaste."); return; }
+  var btn = $("btnVerificar");
+  btn.disabled = true;
+  btn.textContent = "Verificando…";
+  toastMsg(msg, "warn", "Verificando tu depósito… Esto puede tardar unos segundos.");
+  try{
+    var res = await fetch(WORKER_URL + "/api/verify-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId: state.orderId, fecha: fecha, monto: monto, clave_rastreo: clave, emisor: banco })
+    });
+    var body = await res.json().catch(function(){ return {}; });
+    btn.disabled = false;
+    btn.textContent = "Verificar mi pago";
+    if(res.ok && body.status === "aprobado"){
+      $("oxxoBox").classList.add("hidden");
+      toastMsg(msg, "ok", "¡Pago verificado! Tu documento está desbloqueado.");
+      /* Doble confirmación: se consulta el estado real del pedido antes de desbloquear. */
+      await refreshOrderStatus(state.orderId, state.shareToken || "");
+      return;
+    }
+    var reason = (body && body.reason) ? body.reason : "No encontramos ese depósito todavía.";
+    toastMsg(msg, "err", reason + " Revisa la clave, la fecha y el monto de tu ticket e inténtalo de nuevo.");
+    showRetry();
+  }catch(e){
+    btn.disabled = false;
+    btn.textContent = "Verificar mi pago";
+    toastMsg(msg, "err", "No se pudo conectar con el servidor de verificación. Revisa tu conexión e inténtalo de nuevo. Tu documento sigue bloqueado.");
+  }
+}
+
+/* ---------- estado del pedido (GET /api/order/:id) ---------- */
+function showOrderStatus(kind, html){
+  var box = $("orderStatusBox");
+  box.classList.remove("hidden");
+  box.innerHTML = '<p class="' + (kind === "ok" ? "ok" : kind === "err" ? "err" : "warn") + '" style="margin:0">' + html + '</p>';
+}
+function showRetry(){
+  $("paidActions").classList.remove("hidden");
+  $("btnDescargar").classList.add("hidden");
+  $("btnCompartir").classList.add("hidden");
+  $("btnReintentar").classList.remove("hidden");
+}
+function showOrderApproved(body){
+  showOrderStatus("ok", "¡Pago verificado! Tu documento está desbloqueado. Folio: <b>" + esc(body.orderId) + "</b> · Monto: <b>" + money(body.amount) + "</b>");
+  $("oxxoBox").classList.add("hidden");
+  $("paidActions").classList.remove("hidden");
+  $("btnDescargar").classList.remove("hidden");
+  $("btnCompartir").classList.remove("hidden");
+  $("btnReintentar").classList.add("hidden");
+  $("btnPagar").classList.add("hidden");
+  $("shareRow").classList.add("hidden");
+}
+async function refreshOrderStatus(orderId, token){
+  try{
+    var url = WORKER_URL + "/api/order/" + encodeURIComponent(orderId) + (token ? "?token=" + encodeURIComponent(token) : "");
+    var res = await fetch(url);
+    var body = await res.json().catch(function(){ return {}; });
+    if(!res.ok){
+      showOrderStatus("err", "No encontramos ese folio. Verifica el folio e inténtalo de nuevo.");
+      return null;
+    }
+    state.orderStatus = body.status;
+    if(body.shareToken) state.shareToken = body.shareToken;
+    if(body.product) state.orderProduct = body.product;
+    if(body.status === "aprobado"){
+      if(body.data){
+        if(body.product && body.product !== "cv" && typeof DFProducts !== "undefined" && DFProducts.getProduct(body.product)){
+          var pd = DFProducts.normalizeData(body.product, body.data);
+          state.currentData = pd;
+          fillProdForm(body.product, pd);
+          saveJSON(LS_PROD_DRAFT, { product: body.product, data: pd });
+        } else {
+          var nd = normalizeData(body.data);
+          if(body.template && TEMPLATES[body.template]) state.template = body.template;
+          applyDataToForm(nd);
+          saveJSON(LS_DRAFT, nd);
+          renderPreview();
+          document.querySelectorAll("#tplGrid .tpl-btn").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-template") === state.template); });
+        }
+      }
+      showOrderApproved(body);
+    } else if(body.status === "rechazado" || body.status === "cancelado"){
+      showOrderStatus("err", "Tu pago fue " + (body.status === "rechazado" ? "rechazado" : "cancelado") + ". Tu documento sigue bloqueado y tu información no se perdió. Puedes crear un pedido nuevo sin volver a llenar el formulario.");
+      showRetry();
+    } else if(body.status === "reembolsado"){
+      showOrderStatus("err", "Este pedido fue reembolsado. Tu documento sigue bloqueado.");
+    } else {
+      showOrderStatus("warn", "Tu pago sigue pendiente de verificación. Si ya depositaste en OXXO, verifica tu pago con la clave de rastreo de tu ticket en la sección del generador.");
+      if(state.oxxo && state.orderId){
+        showOxxoBox({ orderId: state.orderId, amount: body.amount || state.oxxoAmount || cvPrice(), oxxo: state.oxxo });
+      } else {
+        showRetry();
+      }
+    }
+    return body;
+  }catch(e){
+    showOrderStatus("err", "No se pudo consultar el estado del pedido. Revisa tu conexión e inténtalo de nuevo.");
+    return null;
+  }
+}
+async function checkOrderFromURL(){
+  var params = new URLSearchParams(window.location.search);
+  var orderId = params.get("order") || loadJSON(LS_ORDER, null);
+  var token = params.get("token") || loadJSON(LS_SHARE, null) || "";
+  if(!orderId) return;
+  state.orderId = orderId;
+  if(token) state.shareToken = token;
+  await refreshOrderStatus(orderId, token);
+  var gen = document.getElementById("generador");
+  var genProd = document.getElementById("generador-producto");
+  if(params.get("order")){
+    if(state.orderProduct && state.orderProduct !== "cv" && genProd && !genProd.classList.contains("hidden")) genProd.scrollIntoView({ behavior: "smooth" });
+    else if(gen) gen.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+/* ---------- compartir (enlace seguro) ---------- */
+function shareDoc(){
+  var base = window.location.origin + window.location.pathname;
+  var link = base + "?order=" + encodeURIComponent(state.orderId || "");
+  if(state.shareToken) link += "&token=" + encodeURIComponent(state.shareToken);
+  var row = $("shareRow");
+  row.classList.remove("hidden");
+  row.innerHTML = "Tu enlace seguro: <a href=\"" + esc(link) + "\">" + esc(link) + "</a>";
+  function done(){ toastMsg($("payMsg"), "ok", "Enlace copiado. Compártelo con quien quieras; solo funciona con tu token y tu pago aprobado."); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link).then(done, function(){ done(); });
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = link; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    ta.remove(); done();
+  }
+}
+
+/* ---------- Mi pedido (consulta por folio) ---------- */
+async function lookupOrder(){
+  var id = $("lookupId").value.trim();
+  var token = $("lookupToken").value.trim();
+  var out = $("pedidoResult");
+  if(!id){ out.innerHTML = '<p class="err">Escribe tu folio (empieza con DF-).</p>'; return; }
+  out.innerHTML = '<p class="muted">Consultando tu pedido…</p>';
+  try{
+    var url = WORKER_URL + "/api/order/" + encodeURIComponent(id) + (token ? "?token=" + encodeURIComponent(token) : "");
+    var res = await fetch(url);
+    var body = await res.json().catch(function(){ return {}; });
+    if(!res.ok){ out.innerHTML = '<p class="err">No encontramos ese folio. Verifica el folio e inténtalo de nuevo.</p>'; return; }
+    var st = body.status;
+    var badge = st === "aprobado" ? '<span class="badge badge-green">APROBADO</span>'
+      : st === "pendiente" ? '<span class="badge badge-yellow">PENDIENTE</span>'
+      : '<span class="badge badge-red">' + esc(st.toUpperCase()) + '</span>';
+    var fechaCompra = body.created ? new Date(body.created).toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" }) : "";
+    if(body.product) state.orderProduct = body.product;
+    var html = '<div class="card" style="box-shadow:none"><p><b>Folio:</b> ' + esc(body.orderId) + ' ' + badge + '</p>'
+      + '<p><b>Producto:</b> ' + esc(productName(body.product || "cv")) + '</p>'
+      + '<p><b>Monto:</b> ' + money(body.amount) + '</p>'
+      + (fechaCompra ? '<p><b>Fecha de compra:</b> ' + esc(fechaCompra) + '</p>' : '');
+    if(st === "aprobado"){
+      if(body.data){
+        state.orderId = body.orderId;
+        if(body.shareToken) state.shareToken = body.shareToken;
+        if(body.product && body.product !== "cv" && typeof DFProducts !== "undefined" && DFProducts.getProduct(body.product)){
+          var pd2 = DFProducts.normalizeData(body.product, body.data);
+          state.currentData = pd2;
+          fillProdForm(body.product, pd2);
+          saveJSON(LS_PROD_DRAFT, { product: body.product, data: pd2 });
+        } else {
+          var nd2 = normalizeData(body.data);
+          if(body.template && TEMPLATES[body.template]) state.template = body.template;
+          applyDataToForm(nd2);
+          saveJSON(LS_DRAFT, nd2);
+          renderPreview();
+        }
+        html += '<p class="ok">Tu pago fue aprobado. Tu PDF está desbloqueado.</p>'
+          + '<button type="button" class="btn btn-blue btn-block" onclick="downloadPdf()">Descargar mi PDF</button>'
+          + '<p style="margin-top:10px"><button type="button" class="btn btn-outline btn-block" onclick="shareDoc()">Compartir mi documento</button></p>';
+      } else {
+        var draft = loadJSON(LS_DRAFT, null);
+        var pdraft = loadJSON(LS_PROD_DRAFT, null);
+        if(body.product && body.product !== "cv" && pdraft && pdraft.product === body.product && pdraft.data){
+          state.currentData = DFProducts.normalizeData(body.product, pdraft.data);
+          state.orderId = body.orderId;
+          html += '<p class="ok">Tu pago fue aprobado. Tu PDF está desbloqueado (usando los datos guardados en este navegador).</p>'
+            + '<button type="button" class="btn btn-blue btn-block" onclick="downloadPdf()">Descargar mi PDF</button>';
+        } else if(draft && draft.nombre){
+          state.data = normalizeData(draft);
+          state.orderId = body.orderId;
+          html += '<p class="ok">Tu pago fue aprobado. Tu PDF está desbloqueado (usando los datos guardados en este navegador).</p>'
+            + '<button type="button" class="btn btn-blue btn-block" onclick="downloadPdf()">Descargar mi PDF</button>';
+        } else {
+          html += '<p class="warn">Tu pago fue aprobado, pero los datos de tu documento no están en este navegador. Abre tu enlace seguro (con token) para descargar tu PDF.</p>';
+        }
+      }
+    } else if(st === "pendiente"){
+      html += '<p class="warn">Tu pago sigue pendiente de verificación. Si ya depositaste en OXXO, verifica tu pago con la clave de rastreo de tu ticket en la sección del generador.</p>';
+    } else {
+      html += '<p class="err">Tu pago no fue aprobado, así que tu documento sigue bloqueado. Puedes crear un pedido nuevo desde el generador.</p>';
+    }
+    html += '</div>';
+    out.innerHTML = html;
+  }catch(e){
+    out.innerHTML = '<p class="err">No se pudo consultar tu pedido. Revisa tu conexión e inténtalo de nuevo.</p>';
+  }
+}
+
+/* ---------- panel administrativo ---------- */
+var adminOrdersCache = [];
+function adminHeaders(){
+  return { "Content-Type": "application/json", "Authorization": "Bearer " + (state.adminToken || "") };
+}
+async function adminLogin(){
+  var pass = $("adminPass").value;
+  var msg = $("adminLoginMsg");
+  if(!pass){ toastMsg(msg, "err", "Escribe tu contraseña."); return; }
+  toastMsg(msg, "warn", "Verificando…");
+  try{
+    var res = await fetch(WORKER_URL + "/api/admin/login", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: pass })
+    });
+    var body = await res.json().catch(function(){ return {}; });
+    if(!res.ok || !body.token){
+      toastMsg(msg, "err", res.status === 401 ? "Contraseña incorrecta." : "No se pudo entrar al panel. El backend de administración no está configurado.");
+      return;
+    }
+    state.adminToken = body.token;
+    try{ sessionStorage.setItem(SS_ADMIN, body.token); }catch(e){}
+    $("adminLoginBox").classList.add("hidden");
+    $("adminPanel").classList.remove("hidden");
+    loadAdmin();
+  }catch(e){
+    toastMsg(msg, "err", "No se pudo conectar con el servidor. Revisa tu conexión.");
+  }
+}
+function adminLogout(){
+  state.adminToken = null;
+  try{ sessionStorage.removeItem(SS_ADMIN); }catch(e){}
+  $("adminPanel").classList.add("hidden");
+  $("adminLoginBox").classList.remove("hidden");
+  $("adminPass").value = "";
+}
+async function loadAdmin(){
+  await loadAdminOrders();
+  await loadAdminConfig();
+}
+async function loadAdminOrders(){
+  var tbody = $("adminOrdersBody");
+  try{
+    var res = await fetch(WORKER_URL + "/api/admin/orders", { headers: adminHeaders() });
+    var body = await res.json().catch(function(){ return {}; });
+    if(!res.ok) throw new Error("orders " + res.status);
+    var orders = Array.isArray(body.orders) ? body.orders : [];
+    adminOrdersCache = orders;
+    var aprobados = orders.filter(function(o){ return o.status === "aprobado"; });
+    var ingresos = aprobados.reduce(function(s, o){ return s + (Number(o.amount) || 0); }, 0);
+    var pendientes = orders.filter(function(o){ return o.status === "pendiente"; }).length;
+    $("statVentas").textContent = String(aprobados.length);
+    $("statIngresos").textContent = money(ingresos);
+    $("statPendientes").textContent = String(pendientes);
+    /* Ventas por documento (solo aprobadas). */
+    var porProd = {};
+    aprobados.forEach(function(o){
+      var k = o.product || "cv";
+      porProd[k] = (porProd[k] || 0) + 1;
+    });
+    var spp = $("statPorProducto");
+    if(spp){
+      var keys = Object.keys(porProd);
+      if(!keys.length){
+        spp.innerHTML = '<p class="muted">Aún no hay ventas.</p>';
+      } else {
+        keys.sort(function(a, b){ return porProd[b] - porProd[a]; });
+        spp.innerHTML = keys.map(function(k){
+          return '<p style="margin:4px 0"><b>' + esc(productName(k)) + ':</b> ' + porProd[k] + ' venta' + (porProd[k] === 1 ? '' : 's') + ' aprobada' + (porProd[k] === 1 ? '' : 's') + '</p>';
+        }).join("");
+      }
+    }
+    if(!orders.length){ tbody.innerHTML = '<tr><td colspan="7" class="muted">Aún no hay pedidos.</td></tr>'; return; }
+    tbody.innerHTML = orders.map(function(o){
+      var badge = o.status === "aprobado" ? '<span class="badge badge-green">APROBADO</span>'
+        : o.status === "pendiente" ? '<span class="badge badge-yellow">PENDIENTE</span>'
+        : '<span class="badge badge-red">' + esc(String(o.status).toUpperCase()) + '</span>';
+      var fecha = o.created ? new Date(o.created).toLocaleDateString("es-MX", { day: "numeric", month: "short", year: "numeric" }) : "—";
+      var accion = o.status === "pendiente"
+        ? '<button type="button" class="btn btn-blue btn-sm" onclick="approveOrder(\'' + esc(o.orderId) + '\')">Aprobar</button>'
+        : '<span class="muted">—</span>';
+      return "<tr><td><b>" + esc(o.orderId) + "</b></td><td>" + esc(o.name || "") + "<br><span class='muted'>" + esc(o.email || "") + "</span></td><td>" + esc(productName(o.product || "cv")) + "</td><td>" + money(o.amount) + "</td><td>" + badge + "</td><td>" + esc(fecha) + "</td><td>" + accion + "</td></tr>";
+    }).join("");
+  }catch(e){
+    tbody.innerHTML = '<tr><td colspan="7" class="err">No se pudieron cargar los pedidos. El panel necesita el backend configurado.</td></tr>';
+  }
+}
+/* Aprueba un pedido a mano (respaldo: la dueña vio el depósito en su app
+   de Spin y el ticket no traía clave de rastreo). */
+async function approveOrder(orderId){
+  if(!confirm("¿Aprobar el pedido " + orderId + "? Solo hazlo si ya viste el depósito en tu cuenta.")) return;
+  try{
+    var res = await fetch(WORKER_URL + "/api/admin/approve", {
+      method: "POST", headers: adminHeaders(),
+      body: JSON.stringify({ orderId: orderId })
+    });
+    var body = await res.json().catch(function(){ return {}; });
+    if(!res.ok || !body.ok) throw new Error("approve " + res.status);
+    toastMsg($("adminMsg"), "ok", "Pedido " + orderId + " aprobado. El cliente ya puede descargar su PDF.");
+    loadAdminOrders();
+  }catch(e){
+    toastMsg($("adminMsg"), "err", "No se pudo aprobar el pedido. Revisa tu conexión e inténtalo de nuevo.");
+  }
+}
+async function loadAdminConfig(){
+  var box = $("cfgProducts");
+  try{
+    var res = await fetch(WORKER_URL + "/api/admin/config", { headers: adminHeaders() });
+    var body = await res.json().catch(function(){ return {}; });
+    if(!res.ok) throw new Error("config " + res.status);
+    var products = Array.isArray(body.products) ? body.products : [];
+    state.products = products;
+    renderPrices(); renderCatalog();
+    box.innerHTML = products.map(function(p, i){
+      return '<div class="rep-item"><b>' + esc(p.name) + '</b> <span class="muted">(' + esc(p.id) + ')</span>'
+        + '<div class="row2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">'
+        + '<div><label class="f" style="margin-top:0">Precio (MXN)</label><input type="number" min="0" step="1" data-cfg-price="' + i + '" value="' + Number(p.price || 0) + '"></div>'
+        + '<div><label class="f" style="margin-top:0">Estado</label><select data-cfg-active="' + i + '"><option value="1"' + (p.active ? " selected" : "") + '>Activo</option><option value="0"' + (!p.active ? " selected" : "") + '>Inactivo</option></select></div>'
+        + '</div></div>';
+    }).join("");
+  }catch(e){
+    box.innerHTML = '<p class="err">No se pudo cargar la configuración. El panel necesita el backend configurado.</p>';
+  }
+}
+async function saveAdminConfig(){
+  var msg = $("adminMsg");
+  var products = state.products.map(function(p, i){
+    var priceEl = document.querySelector('[data-cfg-price="' + i + '"]');
+    var actEl = document.querySelector('[data-cfg-active="' + i + '"]');
+    return { id: p.id, name: p.name, description: p.description || "",
+      price: priceEl ? Math.max(0, Number(priceEl.value) || 0) : Number(p.price) || 0,
+      active: actEl ? actEl.value === "1" : !!p.active };
+  });
+  toastMsg(msg, "warn", "Guardando…");
+  try{
+    var res = await fetch(WORKER_URL + "/api/admin/config", {
+      method: "POST", headers: adminHeaders(),
+      body: JSON.stringify({ products: products })
+    });
+    var body = await res.json().catch(function(){ return {}; });
+    if(!res.ok || !body.ok) throw new Error("save " + res.status);
+    state.products = body.products || products;
+    renderPrices(); renderCatalog();
+    toastMsg(msg, "ok", "Cambios guardados. Los precios nuevos ya se ven en la tienda.");
+  }catch(e){
+    toastMsg(msg, "err", "No se pudieron guardar los cambios. Revisa tu conexión e inténtalo de nuevo.");
+  }
+}
+function downloadCSV(){
+  if(!adminOrdersCache.length){ alert("No hay pedidos para exportar."); return; }
+  function q(v){ return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"'; }
+  var lines = ["Folio,Cliente,Correo,Producto,Monto (MXN),Estado,Fecha,Pago ID"];
+  adminOrdersCache.forEach(function(o){
+    var fecha = o.created ? new Date(o.created).toISOString().slice(0, 10) : "";
+    lines.push([q(o.orderId), q(o.name), q(o.email), q(o.product), Number(o.amount) || 0, q(o.status), fecha, q(o.paymentId || "")].join(","));
+  });
+  var blob = new Blob(["\uFEFF" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "ventas-docufacil.csv";
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+/* ---------- inicio ---------- */
+function bindInputs(){
+  ["cvNombre", "cvTelefono", "cvEmail", "cvCiudad", "cvEstado", "cvPerfil", "cvHabilidades"].forEach(function(id){
+    var el = $(id);
+    if(el) el.addEventListener("input", function(){ saveDraft(); renderPreview(); });
+  });
+}
+function initFAQ(){
+  document.querySelectorAll(".faq-q").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      btn.parentElement.classList.toggle("open");
+    });
+  });
+}
+function init(){
+  initRepeaters();
+  initPhoto();
+  initTemplates();
+  bindInputs();
+  restoreDraft();
+  renderPreview();
+  initFAQ();
+  $("btnPagar").addEventListener("click", function(){ state.currentProduct = "cv"; state.orderProduct = "cv"; createOrder(); });
+  var bp = $("btnPagarProd");
+  if(bp) bp.addEventListener("click", createOrder);
+  initCatalogFilters();
+  $("btnVerificar").addEventListener("click", verifyPayment);
+  $("btnDescargar").addEventListener("click", downloadPdf);
+  $("btnCompartir").addEventListener("click", shareDoc);
+  $("btnReintentar").addEventListener("click", function(){
+    $("paidActions").classList.add("hidden");
+    $("orderStatusBox").classList.add("hidden");
+    var st = state.orderStatus;
+    var box = $("oxxoBox");
+    if(st === "rechazado" || st === "cancelado" || st === "reembolsado"){
+      /* Pedido cerrado: hay que crear uno nuevo (los datos del formulario están guardados). */
+      if(box) box.classList.add("hidden");
+      var bp = $("btnPagar");
+      bp.classList.remove("hidden");
+      bp.disabled = false;
+      renderPrices();
+      toastMsg($("payMsg"), "warn", "Ese pedido ya está cerrado. Crea un pedido nuevo con el botón de arriba (tus datos están guardados).");
+      return;
+    }
+    if(box && !box.classList.contains("hidden")){
+      /* El formulario de verificación ya está a la vista: solo baja a él, sin borrar nada. */
+      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      var clave = $("vfClave");
+      if(clave) clave.focus();
+      return;
+    }
+    if(state.oxxo && state.orderId){
+      showOxxoBox({ orderId: state.orderId, amount: state.oxxoAmount || cvPrice(), oxxo: state.oxxo });
+      return;
+    }
+    $("btnPagar").classList.remove("hidden");
+    toastMsg($("payMsg"), "warn", "Para verificar tu pago, crea de nuevo tu pedido desde el generador (tus datos están guardados).");
+  });
+  $("btnBuscarPedido").addEventListener("click", lookupOrder);
+  $("btnAdminLogin").addEventListener("click", adminLogin);
+  $("adminPass").addEventListener("keydown", function(e){ if(e.key === "Enter") adminLogin(); });
+  $("btnAdminSalir").addEventListener("click", adminLogout);
+  $("btnGuardarConfig").addEventListener("click", saveAdminConfig);
+  $("btnDescargarCSV").addEventListener("click", downloadCSV);
+  try{
+    var savedAdmin = sessionStorage.getItem(SS_ADMIN);
+    if(savedAdmin){
+      state.adminToken = savedAdmin;
+      $("adminLoginBox").classList.add("hidden");
+      $("adminPanel").classList.remove("hidden");
+      loadAdmin();
+    }
+  }catch(e){}
+  /* Restaura los datos para pagar en OXXO (solo para mostrar; el estado
+     del pago siempre se consulta al Worker). */
+  var savedOxxo = loadJSON(LS_OXXO, null);
+  if(savedOxxo && savedOxxo.oxxo){
+    state.oxxo = savedOxxo.oxxo;
+    state.oxxoAmount = savedOxxo.amount;
+    if(savedOxxo.orderId) state.orderId = savedOxxo.orderId;
+  }
+  loadConfig();
+  checkOrderFromURL();
+}
+init();
+</script>
+</body>
+</html>
